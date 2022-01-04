@@ -13,6 +13,7 @@ namespace Airbnb_PWEB.Models
         public string Description { get; set; }
         [Display(Name = "Preço/Noite")]
         [Required]
+        [Range(0,double.MaxValue,ErrorMessage ="Please enter positive or null value")]
         public double pricePerNigth { get; set; }
         [Display(Name = "Morada")]
         [Required]
