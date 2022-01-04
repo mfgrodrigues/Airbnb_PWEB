@@ -24,7 +24,8 @@ namespace Airbnb_PWEB.Controllers
         // GET: Properties
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Properties.ToListAsync());
+            var applicationDbContext = _context.Properties.Include(p => p.Images);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Properties/Details/5

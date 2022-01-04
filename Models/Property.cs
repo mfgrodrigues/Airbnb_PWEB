@@ -18,6 +18,7 @@ namespace Airbnb_PWEB.Models
         public string City { get; set; }
         [Display(Name = "Comodidades")]
         public string Amenities { get; set; }
+        [Display(Name = "Imagens")]
         public List<PropertyImage> Images { get; set; }
     }
 

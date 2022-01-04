@@ -13,6 +13,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Images)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Tittle)
             </th>
             <th>
@@ -36,6 +39,15 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <th>
+                @foreach(var image in item.Images){
+                @image.Id
+                    {
+                    <img class="img-thumbnail" src="data:@image.FileType;base64,@Convert.ToBase64String(image.Data, 0, image.Data.Length)" />
+                    }
+                }
+            </th>
+                    
             <td>
                 @Html.DisplayFor(modelItem => item.Tittle)
             </td>
