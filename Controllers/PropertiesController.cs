@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Airbnb_PWEB.Data;
 using Airbnb_PWEB.Models;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace Airbnb_PWEB.Controllers
 {
@@ -54,8 +56,30 @@ namespace Airbnb_PWEB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Tittle,Description,pricePerNigth,Address,City,Amenities")] Property @property)
+        public async Task<IActionResult> Create([Bind("Id,Tittle,Description,pricePerNigth,Address,City,Amenities")] Property @property, List<IFormFile> files)
         {
+            property.Images = new List<PropertyImage>();
+            foreach (var file in files)
+            {
+                var fileName = Path.GetFileNameWithoutExtension(file.FileName);
+                var extension = Path.GetExtension(file.FileName);
+                var image = new PropertyImage
+                {
+                    CreatedOn = DateTime.UtcNow,
+                    FileType = file.ContentType,
+                    Extension = extension,
+                    Name = fileName
+                };
+                using (var dataStream = new MemoryStream())
+                {
+                    await file.CopyToAsync(dataStream);
+                    image.Data = dataStream.ToArray();
+                }
+
+                property.Images.Add(image);
+            }
+            // TODO: Check this
+            ModelState.Remove("Images");
             if (ModelState.IsValid)
             {
                 _context.Add(@property);

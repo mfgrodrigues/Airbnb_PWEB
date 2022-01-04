@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Airbnb_PWEB.Models
 {
@@ -17,8 +18,7 @@ namespace Airbnb_PWEB.Models
         public string City { get; set; }
         [Display(Name = "Comodidades")]
         public string Amenities { get; set; }
-
-       // public List<PropertyImage> Images { get; set; }
+        public List<PropertyImage> Images { get; set; }
     }
 
 }
