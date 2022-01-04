@@ -37,6 +37,7 @@ namespace Airbnb_PWEB.Controllers
             }
 
             var @property = await _context.Properties
+                .Include(p => p.Images)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (@property == null)
             {

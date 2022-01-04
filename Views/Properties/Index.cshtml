@@ -39,13 +39,8 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <th>
-                @foreach(var image in item.Images){
-                @image.Id
-                    {
-                    <img class="img-thumbnail" src="data:@image.FileType;base64,@Convert.ToBase64String(image.Data, 0, image.Data.Length)" />
-                    }
-                }
+            <th> 
+               <img class="img-thumbnail" src="data:@item.Images[0].FileType;base64,@Convert.ToBase64String(item.Images[0].Data, 0, item.Images[0].Data.Length)" />
             </th>
                     
             <td>
