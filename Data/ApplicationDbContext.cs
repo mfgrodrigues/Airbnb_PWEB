@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Airbnb_PWEB.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,7 @@ namespace Airbnb_PWEB.Data
             : base(options)
         {
         }
+
+        public DbSet<Property> Properties { get; set; } 
     }
 }
