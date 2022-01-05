@@ -9,9 +9,11 @@ using Airbnb_PWEB.Data;
 using Airbnb_PWEB.Models;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Airbnb_PWEB.Controllers
 {
+    [Authorize(Roles = "Owner_Employeer")]
     public class PropertiesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,12 +24,13 @@ namespace Airbnb_PWEB.Controllers
         }
 
         // GET: Properties
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Properties.Include(p => p.Images);
             return View(await applicationDbContext.ToListAsync());
         }
-
+        [Authorize(Roles = "Owner_Employeer")]
         // GET: Properties/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -118,7 +121,7 @@ namespace Airbnb_PWEB.Controllers
             {
                 return NotFound();
             }
-
+            ModelState.Remove("Images");
             if (ModelState.IsValid)
             {
                 try

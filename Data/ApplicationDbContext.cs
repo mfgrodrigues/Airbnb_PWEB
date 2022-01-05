@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Airbnb_PWEB.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -15,5 +15,6 @@ namespace Airbnb_PWEB.Data
         }
 
         public DbSet<Property> Properties { get; set; } 
+
     }
 }
