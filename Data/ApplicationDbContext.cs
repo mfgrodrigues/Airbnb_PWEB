@@ -15,6 +15,7 @@ namespace Airbnb_PWEB.Data
         }
 
         public DbSet<Property> Properties { get; set; } 
+        public DbSet<PropertyImage> PropertyImages { get; set; }    
 
     }
 }
