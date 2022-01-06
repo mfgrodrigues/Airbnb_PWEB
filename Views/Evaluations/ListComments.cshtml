@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Airbnb_PWEB.Models.Evaluation>
+﻿@model IEnumerable<Airbnb_PWEB.Models.PropertyEvaluationViewModel>
 
 <h1>Lista de Comentários da Propriedade</h1>
 
@@ -6,17 +6,29 @@
        <thead>
            <tr>
                <th>
-                   Nome do Utilizador
+                  Nome
                </th>
                <th>
-                   @Html.DisplayNameFor(model => model.Classification)
+                  Classificação
                </th>
                <th>
-                   @Html.DisplayNameFor(model => model.Comment)
+                   Comentário
                </th>
            </tr>
         </thead>
     <tbody>
-        
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @item.EvaluationId
+            </td>
+            <td>
+                @item.Comment.Classification
+            </td>
+            <td>
+                @item.Comment.Comment
+            </td>
+        </tr>
+}
     </tbody>
 </table>

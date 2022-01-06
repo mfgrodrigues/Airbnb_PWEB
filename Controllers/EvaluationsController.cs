@@ -161,24 +161,36 @@ namespace Airbnb_PWEB.Controllers
             return _context.Evaluation.Any(e => e.EvaluationId == id);
         }
 
-        public async Task<IActionResult> ListCommets(int id) // id da propriedade , id da reserva para saber o id da avaliacao
+        public async Task<IActionResult> ListComments(int id) // id da propriedade , id da reserva para saber o id da avaliacao
         {
-            var lista = _context.Reservations.Where(r => r.PropertyId == id).ToList();        // ir á lista de reservas buscar todas as reservas que tem o id da propriedade 
-            List<Reservation> listPropertyReservations = new List<Reservation>();             // lista para guardar os comentarios da prorpiedade
-    
-          // criar um modelo para guardar o nome da utilizador , classificação e comentario
-          // adicionar cada atributo a esse objeto e depois enviar o objeto => sera que depois na html tenho acesso aos dados?
+            var lista = _context.Reservations.Where(r => r.PropertyId == id).ToList(); // ir á lista de reservas buscar todas as reservas que tem o id da propriedade 
 
-            foreach (var item in lista)
+            List<PropertyEvaluationViewModel> propertyEvaluations = new List<PropertyEvaluationViewModel>();
+            
+            if(lista != null)
             {
-                var evaluation = await _context.Evaluation.FindAsync(item.ReservationId);
-                if (item.ReservationId.Equals(evaluation)){
-                    listPropertyReservations.Add(item);
+                // lista para guardar os comentarios da prorpiedade
+
+                // criar um modelo para guardar o nome da utilizador , classificação e comentario
+                // adicionar cada atributo a esse objeto e depois enviar o objeto => sera que depois na html tenho acesso aos dados?
+
+                foreach (var item in lista)
+                {
+                    //var user = await _context.Users.Where(i => i.Id == item.UserId).FirstOrDefaultAsync();
+                    PropertyEvaluationViewModel pevm = new PropertyEvaluationViewModel
+                    {
+                        EvaluationId ="Ricardo",
+                        Comment = await _context.Evaluation.Where(i => i.ReservationId == item.ReservationId).FirstOrDefaultAsync()
+                    };
+
+                    propertyEvaluations.Add(pevm);
                 }
+                    return View(propertyEvaluations);
             }
-
-            return View("Index");
+            else
+            {
+                return NotFound();  
+            }
         }
-
     }
 }
