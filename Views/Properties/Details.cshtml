@@ -55,6 +55,11 @@
         </dd>
     </dl>
 </div>
+<div class="form-group">
+    <a asp-controller="Reservations" asp-action="Create" asp-route-id ="@Model.Id">
+    <input type="button" value="Reservar" class="btn btn-primary"/>
+    </a>
+</div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
