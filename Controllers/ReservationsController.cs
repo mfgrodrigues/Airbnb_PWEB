@@ -36,9 +36,10 @@ namespace Airbnb_PWEB.Controllers
                 return NotFound();
             }
 
+            var reservation = await _context.Reservations.Include(p => p.Property).FirstOrDefaultAsync(m => m.ReservationId == id);
 
-            var reservation = await _context.Reservations
-                .FirstOrDefaultAsync(m => m.ReservationId == id);
+            var property = await _context.Properties.FirstOrDefaultAsync(p => p.Id == reservation.PropertyId);
+
             if (reservation == null)
             {
                 return NotFound();
@@ -91,6 +92,8 @@ namespace Airbnb_PWEB.Controllers
             }
 
             var reservation = await _context.Reservations.FindAsync(id);
+           
+
             if (reservation == null)
             {
                 return NotFound();

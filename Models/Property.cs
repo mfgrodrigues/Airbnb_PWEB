@@ -26,6 +26,8 @@ namespace Airbnb_PWEB.Models
 
         [Required]
         public List<PropertyImage> Images { get; set; }
+
+        public List<Reservation> Reservations { get; set; }
     }
 
 }
