@@ -19,5 +19,7 @@ namespace Airbnb_PWEB.Data
 
         public DbSet<Reservation> Reservations { get; set; }    
 
+        public DbSet<Airbnb_PWEB.Models.Evaluation> Evaluation { get; set; }
+
     }
 }
