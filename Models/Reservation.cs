@@ -17,5 +17,7 @@ namespace Airbnb_PWEB.Models
         public int PropertyId { get; set; }
 
         public Property Property { get; set; }
+
+        public Evaluation Evaluation { get; set; }
     }
 }
