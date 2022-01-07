@@ -34,11 +34,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Property.Tittle)
             </td>
-            <td>
+           @* <td>
                 @Html.DisplayFor(modelItem => item.Reserve.CheckIn)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Reserve.CheckOut)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.EvaluationComment.ReservationId)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.EvaluationComment.Classification)

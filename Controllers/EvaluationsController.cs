@@ -25,7 +25,7 @@ namespace Airbnb_PWEB.Controllers
         {
             List<MyEvaluationsViewModel> myEvaluations = new List<MyEvaluationsViewModel>();
 
-            var evaluationList = await _context.Evaluation.Include( r => r.Reservation).Where(r => r.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier)).ToListAsync();
+            var evaluationList = await _context.Evaluation.Where(r => r.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier)).Include(r => r.Reservation).ToListAsync();
             if (evaluationList != null)
             {
                 foreach (var evaluation in evaluationList)
@@ -70,7 +70,7 @@ namespace Airbnb_PWEB.Controllers
         // GET: Evaluations/Create
         public IActionResult Create()
         {
-            ViewData["ReservationId"] = new SelectList(_context.Reservations, "ReservationId", "ReservationId");
+            //ViewData["ReservationId"] = new SelectList(_context.Reservations, "ReservationId", "ReservationId");
             return View();
         }
 
@@ -83,14 +83,14 @@ namespace Airbnb_PWEB.Controllers
         {
             evaluation.ReservationId = id;
             evaluation.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
+            
             if (ModelState.IsValid)
             {
                 _context.Add(evaluation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ReservationId"] = new SelectList(_context.Reservations, "ReservationId", "ReservationId", evaluation.ReservationId);
+            //ViewData["ReservationId"] = new SelectList(_context.Reservations, "ReservationId", "ReservationId", evaluation.ReservationId);
             return View(evaluation);
         }
 
@@ -102,12 +102,14 @@ namespace Airbnb_PWEB.Controllers
                 return NotFound();
             }
 
-            var evaluation = await _context.Evaluation.FindAsync(id);
+            var evaluation = await _context.Evaluation
+                .Include(e => e.Reservation)
+                .FirstOrDefaultAsync(m => m.EvaluationId == id);
             if (evaluation == null)
             {
                 return NotFound();
             }
-            ViewData["ReservationId"] = new SelectList(_context.Reservations, "ReservationId", "ReservationId", evaluation.ReservationId);
+            //ViewData["ReservationId"] = new SelectList(_context.Reservations, "ReservationId", "ReservationId", evaluation.ReservationId);
             return View(evaluation);
         }
 
@@ -116,7 +118,7 @@ namespace Airbnb_PWEB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EvaluationId,Comment,Classification,UserId,ReservationId")] Evaluation evaluation)
+        public async Task<IActionResult> Edit(int id, [Bind("EvaluationId,Comment,Classification,UserId, ReservationId")] Evaluation evaluation)
         {
             if (id != evaluation.EvaluationId)
             {
@@ -127,8 +129,10 @@ namespace Airbnb_PWEB.Controllers
             {
                 try
                 {
-                    _context.Update(evaluation);
-                    await _context.SaveChangesAsync();
+                    _context.Entry(evaluation).State = EntityState.Modified;
+                    _context.Entry(evaluation).Property(e => e.UserId).IsModified = false;
+                    _context.Entry(evaluation).Property(e => e.ReservationId).IsModified = false;  
+                    _context.SaveChanges();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -143,7 +147,7 @@ namespace Airbnb_PWEB.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ReservationId"] = new SelectList(_context.Reservations, "ReservationId", "ReservationId", evaluation.ReservationId);
+            //ViewData["ReservationId"] = new SelectList(_context.Reservations, "ReservationId", "ReservationId", evaluation.ReservationId);
             return View(evaluation);
         }
 
