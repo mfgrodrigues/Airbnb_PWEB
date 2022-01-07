@@ -28,6 +28,8 @@ namespace Airbnb_PWEB.Controllers
 
         public async Task<IActionResult> Details(string id)
         {
+            if(id == null)
+                return NotFound();
 
             var role = roleManager.FindByIdAsync(id);
 
@@ -67,21 +69,21 @@ namespace Airbnb_PWEB.Controllers
                 return NotFound();
             }
 
-            await userManager.DeleteAsync(user);
-            return View("Details");
+            return View(user);
         }
 
-        // POST: Reservations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(ApplicationUser user)
+        public async Task<ActionResult> DeleteConfirmed(string id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var user = await userManager.FindByIdAsync(id);
             await userManager.DeleteAsync(user);
             return RedirectToAction(nameof(Index));
         }
-
-
-
     }
 }
