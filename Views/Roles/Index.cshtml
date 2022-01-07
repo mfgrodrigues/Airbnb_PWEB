@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+
+<h1>Lista de Roles</h1>
+
+<br />
+<table class="table table-bordered table-hover~">
+
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var role in Model)
+        {
+            <tr>
+                <td>@role.Id</td>
+                <td>@role.Name</td>
+                <td><a class="btn btn-primary" asp-action="Details" asp-route-id="@role.Id">Details</a></td>
+            </tr>
+
+        }
+
+    </tbody>
+
+
+</table>
