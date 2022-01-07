@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Airbnb_PWEB.Models.Evaluation>
+﻿@model IEnumerable<Airbnb_PWEB.Models.MyEvaluationsViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -11,10 +11,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Classification)
+                Propriedade
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Comment)
+                Check-In
+            </th>
+            <th>
+                Check-Out
+            </th>
+            <th>
+                Classificação
+            </th>
+            <th>
+                Comentário
             </th>
             <th></th>
         </tr>
@@ -23,15 +32,23 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Classification)
+                @Html.DisplayFor(modelItem => item.Property.Tittle)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Comment)
+                @Html.DisplayFor(modelItem => item.Reserve.CheckIn)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.EvaluationId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.EvaluationId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.EvaluationId">Delete</a>
+                @Html.DisplayFor(modelItem => item.Reserve.CheckOut)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EvaluationComment.Classification)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.EvaluationComment.Comment)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.EvaluationComment.EvaluationId">Editar</a> |
+                <a asp-action="Delete" asp-route-id="@item.EvaluationComment.EvaluationId">Apagar</a>
             </td>
         </tr>
 }

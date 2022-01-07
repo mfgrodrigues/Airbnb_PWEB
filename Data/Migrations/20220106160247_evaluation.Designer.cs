@@ -105,7 +105,7 @@ namespace Airbnb_PWEB.Data.Migrations
                     b.Property<int>("Classification")
                         .HasColumnType("int");
 
-                    b.Property<string>("Comment")
+                    b.Property<string>("EvaluationComment")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ReservationId")

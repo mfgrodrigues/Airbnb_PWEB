@@ -23,8 +23,29 @@ namespace Airbnb_PWEB.Controllers
         // GET: Evaluations
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Evaluation.Include(e => e.Reservation);
-            return View(await applicationDbContext.ToListAsync());
+            List<MyEvaluationsViewModel> myEvaluations = new List<MyEvaluationsViewModel>();
+
+            var evaluationList = await _context.Evaluation.Include( r => r.Reservation).Where(r => r.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier)).ToListAsync();
+            if (evaluationList != null)
+            {
+                foreach (var evaluation in evaluationList)
+                {
+
+                    MyEvaluationsViewModel evm = new MyEvaluationsViewModel
+                    {
+                        Property = await _context.Properties.Where(p => p.Id == evaluation.Reservation.PropertyId).FirstAsync(),
+                        Reserve = evaluation.Reservation,
+                        EvaluationComment = evaluation
+                    };
+
+                    myEvaluations.Add(evm); 
+
+                }
+                return View(myEvaluations);
+            }
+
+            return NotFound();
+            
         }
 
         // GET: Evaluations/Details/5
@@ -163,27 +184,25 @@ namespace Airbnb_PWEB.Controllers
 
         public async Task<IActionResult> ListComments(int id) // id da propriedade , id da reserva para saber o id da avaliacao
         {
-            var lista = _context.Reservations.Where(r => r.PropertyId == id).ToList(); // ir á lista de reservas buscar todas as reservas que tem o id da propriedade 
+            var lista = _context.Reservations.Where(r => r.PropertyId == id).ToList(); // ir à lista de reservas buscar todas as reservas que tem o id da propriedade 
 
             List<PropertyEvaluationViewModel> propertyEvaluations = new List<PropertyEvaluationViewModel>();
             
             if(lista != null)
             {
-                // lista para guardar os comentarios da prorpiedade
-
-                // criar um modelo para guardar o nome da utilizador , classificação e comentario
-                // adicionar cada atributo a esse objeto e depois enviar o objeto => sera que depois na html tenho acesso aos dados?
-
                 foreach (var item in lista)
                 {
-                    //var user = await _context.Users.Where(i => i.Id == item.UserId).FirstOrDefaultAsync();
-                    PropertyEvaluationViewModel pevm = new PropertyEvaluationViewModel
+                    var user = await _context.Users.Where(i => i.Id == item.UserId).FirstOrDefaultAsync();
+                    var comment = await _context.Evaluation.Where(i => i.ReservationId == item.ReservationId).FirstOrDefaultAsync();
+                    if(comment != null && user != null)
                     {
-                        EvaluationId ="Ricardo",
-                        Comment = await _context.Evaluation.Where(i => i.ReservationId == item.ReservationId).FirstOrDefaultAsync()
-                    };
-
-                    propertyEvaluations.Add(pevm);
+                        PropertyEvaluationViewModel pevm = new PropertyEvaluationViewModel
+                        {
+                            EvaluationId = user.FirstName + " " + user.LastName,
+                            Comment = comment
+                        };
+                        propertyEvaluations.Add(pevm);
+                    }
                 }
                     return View(propertyEvaluations);
             }

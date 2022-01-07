@@ -6,7 +6,5 @@ namespace Airbnb_PWEB.Models
     {
         public string EvaluationId { get; set; }    
         public Evaluation Comment { get; set; }
-
-
     }
 }

@@ -1,9 +1,12 @@
-﻿namespace Airbnb_PWEB.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Airbnb_PWEB.Models
 {
     public class Evaluation
     {
         public int EvaluationId { get; set; }
         //[Required]
+        [DataType(DataType.MultilineText)]
         public string Comment { get; set; }
         //[Required]
         public int Classification { get; set; }
