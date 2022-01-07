@@ -28,6 +28,11 @@ namespace Airbnb_PWEB.Models
         public List<PropertyImage> Images { get; set; }
 
         public List<Reservation> Reservations { get; set; }
+
+
+        public int CategoryId { get; set; }
+
+        public Category Category { get; set; }
     }
 
 }

@@ -41,6 +41,7 @@ namespace Airbnb_PWEB.Controllers
 
             var @property = await _context.Properties
                 .Include(p => p.Images)
+                .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (@property == null)
             {
@@ -53,6 +54,7 @@ namespace Airbnb_PWEB.Controllers
         // GET: Properties/Create
         public IActionResult Create()
         {
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name");
             return View();
         }
 
@@ -61,7 +63,7 @@ namespace Airbnb_PWEB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Tittle,Description,pricePerNigth,Address,City,Amenities")] Property @property, List<IFormFile> files)
+        public async Task<IActionResult> Create([Bind("CategoryId,Id,Tittle,Description,pricePerNigth,Address,City,Amenities")] Property @property, List<IFormFile> files)
         {
             property.Images = new List<PropertyImage>();
             foreach (var file in files)
@@ -91,6 +93,8 @@ namespace Airbnb_PWEB.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name", property.CategoryId);
             return View(@property);
         }
 
@@ -107,6 +111,7 @@ namespace Airbnb_PWEB.Controllers
             {
                 return NotFound();
             }
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name", property.CategoryId);
             return View(@property);
         }
 
@@ -115,7 +120,7 @@ namespace Airbnb_PWEB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Tittle,Description,pricePerNigth,Address,City,Amenities")] Property @property)
+        public async Task<IActionResult> Edit(int id, [Bind("CategoryId,Id,Tittle,Description,pricePerNigth,Address,City,Amenities")] Property @property)
         {
             if (id != @property.Id)
             {
@@ -142,6 +147,7 @@ namespace Airbnb_PWEB.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name", property.CategoryId);
             return View(@property);
         }
 
@@ -155,6 +161,7 @@ namespace Airbnb_PWEB.Controllers
 
             var @property = await _context.Properties
                 .Include(p => p.Images)
+                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
                 
             if (@property == null)
