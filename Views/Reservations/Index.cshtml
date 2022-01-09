@@ -43,6 +43,7 @@
                 </td>
                 <td>
                     <a asp-controller="Evaluations" asp-action="Create" asp-route-id="@item.ReservationId">Avaliar Estadia</a> |
+                    <a asp-controller="Items" asp-action="Create" asp-route-id="@item.ReservationId">CheckList</a> |
                     <a asp-action="Details" asp-route-id="@item.ReservationId">Detalhes</a> |
                     <a asp-action="Delete" asp-route-id="@item.ReservationId">Eliminar</a>
                 </td>

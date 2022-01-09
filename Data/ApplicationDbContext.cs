@@ -15,14 +15,15 @@ namespace Airbnb_PWEB.Data
         }
 
         public DbSet<Category> Categories { get; set; }
+
         public DbSet<Property> Properties { get; set; } 
+
         public DbSet<PropertyImage> PropertyImages { get; set; }    
 
         public DbSet<Reservation> Reservations { get; set; }    
 
-        public DbSet<Airbnb_PWEB.Models.Evaluation> Evaluation { get; set; }
+        public DbSet<Evaluation> Evaluation { get; set; }
 
- 
-
+        public DbSet<Item> Items { get; set; }
     }
 }

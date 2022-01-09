@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Airbnb_PWEB.Models
@@ -19,5 +20,7 @@ namespace Airbnb_PWEB.Models
         public Property Property { get; set; }
 
         public Evaluation Evaluation { get; set; }
+
+        public virtual List<Item> ItemsChecked { get; set; }
     }
 }
