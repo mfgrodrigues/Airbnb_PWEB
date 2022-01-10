@@ -22,5 +22,7 @@ namespace Airbnb_PWEB.Models
         public Evaluation Evaluation { get; set; }
 
         public virtual List<Item> ItemsChecked { get; set; }
+
+        public bool statusReservation { get; set; }
     }
 }

@@ -33,6 +33,20 @@ namespace Airbnb_PWEB.Controllers
             return View(reservesList);
         }
 
+        public async Task<IActionResult> IndexEmployees()
+        {
+
+            // mudar isto para listar as propriedades de quem sou dono
+            var reservesList = await _context.Reservations.Include(r => r.Property).Where(r => r.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier)).ToListAsync();
+            if (reservesList == null)
+            {
+                return NotFound();
+            }
+
+            return View(reservesList);
+        }
+
+
         // GET: Reservations/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -64,9 +78,9 @@ namespace Airbnb_PWEB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReservationId,CheckIn,CheckOut,PropertyId,UserId")] Reservation reservation, int id)
+        public async Task<IActionResult> Create([Bind("ReservationId,CheckIn,CheckOut,PropertyId,UserId,statusReservation")] Reservation reservation, int id)
         {
-           
+            reservation.statusReservation = false;
             reservation.PropertyId = id;
             reservation.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -111,7 +125,7 @@ namespace Airbnb_PWEB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ReservationId,CheckIn,CheckOut,PropertyId,UserId")] Reservation reservation)
+        public async Task<IActionResult> Edit(int id, [Bind("ReservationId,CheckIn,CheckOut,PropertyId,UserId,statusReservation")] Reservation reservation)
         {
             if (id != reservation.ReservationId)
             {

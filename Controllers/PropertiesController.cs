@@ -10,6 +10,7 @@ using Airbnb_PWEB.Models;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Airbnb_PWEB.Controllers
 {
@@ -63,8 +64,9 @@ namespace Airbnb_PWEB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CategoryId,Id,Tittle,Description,pricePerNigth,Address,City,Amenities")] Property @property, List<IFormFile> files)
+        public async Task<IActionResult> Create([Bind("CategoryId,Id,Tittle,Description,pricePerNigth,Address,City,Amenities,OwnerId")] Property @property, List<IFormFile> files)
         {
+            property.OwnerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             property.Images = new List<PropertyImage>();
             foreach (var file in files)
             {
@@ -120,7 +122,7 @@ namespace Airbnb_PWEB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CategoryId,Id,Tittle,Description,pricePerNigth,Address,City,Amenities")] Property @property)
+        public async Task<IActionResult> Edit(int id, [Bind("CategoryId,Id,Tittle,Description,pricePerNigth,Address,City,Amenities,OwnerId")] Property @property)
         {
             if (id != @property.Id)
             {

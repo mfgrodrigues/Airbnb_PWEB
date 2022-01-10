@@ -23,7 +23,7 @@ namespace Airbnb_PWEB.Controllers
         public async Task<IActionResult> Index()
         {
             ItemViewModel itemViewModel = new ItemViewModel();
-            itemViewModel.Itens = _context.Items.Include(i => i.Reservation).ToList();
+            itemViewModel.Itens = _context.Items.ToList();
             return View(itemViewModel);
             
         }
@@ -35,6 +35,8 @@ namespace Airbnb_PWEB.Controllers
             var i = await _context.Items.Include(i => i.Reservation).Where(i => i.ItemId == item.Itens[0].ItemId).FirstOrDefaultAsync();    
             i.isCheckEntry = item.Itens[0].isCheckEntry;
             i.isCheckExit = item.Itens[0].isCheckExit;
+
+            //_context.SaveChanges();
 
             _context.Items.Update(i);
             await _context.SaveChangesAsync();
@@ -72,7 +74,7 @@ namespace Airbnb_PWEB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ItemId,Description,isCheckEntry,isCheckExit,ReservationId")] Item item, int id)
+        public async Task<IActionResult> Create([Bind("ItemId,Description,isCheckEntry,isCheckExit,ReservationId,Name")] Item item, int id)
         {
             item.ReservationId = id;
             if (ModelState.IsValid)

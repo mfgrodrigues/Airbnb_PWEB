@@ -29,10 +29,11 @@ namespace Airbnb_PWEB.Models
 
         public List<Reservation> Reservations { get; set; }
 
-
         public int CategoryId { get; set; }
 
         public Category Category { get; set; }
+
+        public string OwnerId { get; set; }
     }
 
 }

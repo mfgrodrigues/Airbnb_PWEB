@@ -17,6 +17,9 @@
                 Item
             </th>
             <th>
+                Observações
+            </th>
+            <th>
                 Entrada
             </th>
             <th>
@@ -25,6 +28,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Itens[0].Reservation)
             </th>
+            
             <th></th>
         </tr>
     </thead>
@@ -32,17 +36,23 @@
 @for (int i = 0; i < Model.Itens.Count; i++) {
         <tr>
             <td>
-                @Html.DisplayFor(model => model.Itens[i].Description)
+                @Html.DisplayFor(model => model.Itens[i].Name)
+                @Html.HiddenFor(model => model.Itens[i].Name)
             </td>
+            <th>
+                @Html.DisplayFor(model => model.Itens[i].Description)
+                @Html.HiddenFor(model => model.Itens[i].Description)
+            </th>
              <td>
                 @Html.CheckBoxFor(model => model.Itens[i].isCheckEntry)
-                @*@Html.HiddenFor(model => model.Itens[i].ItemId)*@
             </td>
-            <td>
-                @Html.CheckBoxFor(model => model.Itens[i].isCheckExit)
-                @Html.HiddenFor(model => model.Itens[i].ItemId)
-                @Html.HiddenFor(model => model.Itens[i].ReservationId)
-            </td>
+             <td>
+                 @Html.CheckBoxFor(model => model.Itens[i].isCheckExit)
+                 @Html.HiddenFor(model => model.Itens[i].ItemId)
+                 @Html.HiddenFor(model => model.Itens[i].ReservationId)
+                 @Html.HiddenFor(model => model.Itens[i].Reservation)
+             </td>
+
             <td>
                 @*@Html.DisplayFor(modelItem => item.Reservation.ReservationId)*@
                  

@@ -13,15 +13,24 @@
                 Propriedade
             </th>
             <th>
-               Check-In
+                Id da Reserva
+            </th>
+            <th>
+                Cliente
+            </th>
+            <th>
+                Check-In
             </th>
             <th>
                 Check-Out
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.statusReservation)
             </th>
-            
+
             <th></th>
         </tr>
     </thead>
@@ -33,15 +42,25 @@
                     @Html.DisplayFor(modelItem => item.Property.Tittle)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.ReservationId)           
+                </td>
+                <td>
+                    Nome Cliente
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.CheckIn)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.CheckOut)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.UserId)
+                </td>
+                <td>
                     @if (item.statusReservation == true)
                     {
                         <span class=" btn btn-success ">Confirmed</span>
+
                     }
                     else
                     {
@@ -55,7 +74,7 @@
                     <a asp-action="Details" asp-route-id="@item.ReservationId">Detalhes</a> |
                     <a asp-action="Delete" asp-route-id="@item.ReservationId">Eliminar</a>
                 </td>
-             
+
             </tr>
         }
     </tbody>
