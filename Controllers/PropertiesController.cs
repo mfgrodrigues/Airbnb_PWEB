@@ -11,6 +11,7 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace Airbnb_PWEB.Controllers
 {
@@ -18,20 +19,31 @@ namespace Airbnb_PWEB.Controllers
     public class PropertiesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private UserManager<ApplicationUser> _userManager;
 
-        public PropertiesController(ApplicationDbContext context)
+        public PropertiesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager; 
+
         }
 
         // GET: Properties
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Properties.Include(p => p.Images);
-            return View(await applicationDbContext.ToListAsync());
+            var currentUser = await _userManager.GetUserAsync(User);
+
+            if (User.IsInRole("Owner_Manager"))
+            {
+                var applicationDbContext = _context.Properties.Include(p => p.Images).Where(p => p.ApplicationUser == currentUser).ToListAsync();
+                return View(await applicationDbContext);
+            }
+            else {
+                var applicationDbContext = _context.Properties.Include(p => p.Images);
+                return View(await applicationDbContext.ToListAsync());
+            }
         }
-        //[Authorize(Roles = "Owner_Employeer")]
         // GET: Properties/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -53,6 +65,7 @@ namespace Airbnb_PWEB.Controllers
         }
 
         // GET: Properties/Create
+        [Authorize(Roles = "Owner_Manager")]
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name");
@@ -64,9 +77,10 @@ namespace Airbnb_PWEB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CategoryId,Id,Tittle,Description,pricePerNigth,Address,City,Amenities,OwnerId")] Property @property, List<IFormFile> files)
+        [Authorize(Roles = "Owner_Manager")]
+        public async Task<IActionResult> Create([Bind("CategoryId,Id,Tittle,Description,pricePerNigth,Address,City,Amenities, ApplicationUser")] Property @property, List<IFormFile> files)
         {
-            property.OwnerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            property.ApplicationUser = await _userManager.GetUserAsync(User);
             property.Images = new List<PropertyImage>();
             foreach (var file in files)
             {
@@ -101,6 +115,7 @@ namespace Airbnb_PWEB.Controllers
         }
 
         // GET: Properties/Edit/5
+        [Authorize(Roles = "Owner_Manager")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -122,7 +137,8 @@ namespace Airbnb_PWEB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CategoryId,Id,Tittle,Description,pricePerNigth,Address,City,Amenities,OwnerId")] Property @property)
+        [Authorize(Roles = "Owner_Manager")]
+        public async Task<IActionResult> Edit(int id, [Bind("CategoryId,Id,Tittle,Description,pricePerNigth,Address,City,Amenities, ApplicationUser")] Property @property)
         {
             if (id != @property.Id)
             {
@@ -154,6 +170,7 @@ namespace Airbnb_PWEB.Controllers
         }
 
         // GET: Properties/Delete/5
+        [Authorize(Roles = "Owner_Manager")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -177,6 +194,7 @@ namespace Airbnb_PWEB.Controllers
         // POST: Properties/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Owner_Manager")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var @property = await _context.Properties.FindAsync(id);

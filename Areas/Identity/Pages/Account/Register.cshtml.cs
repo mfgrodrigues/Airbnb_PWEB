@@ -93,8 +93,8 @@ namespace Airbnb_PWEB.Areas.Identity.Pages.Account
 
                     if (Input.FunctionRole.Equals("Client"))
                         await _userManager.AddToRoleAsync(user, "Client");
-                    else if (Input.FunctionRole.Equals("Owner_Employeer"))
-                        await _userManager.AddToRoleAsync(user, "Owner_Employeer");
+                    else if (Input.FunctionRole.Equals("Owner_Manager"))
+                        await _userManager.AddToRoleAsync(user, "Owner_Manager");
 
 
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

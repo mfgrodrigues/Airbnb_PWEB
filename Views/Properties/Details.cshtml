@@ -160,11 +160,13 @@
 <div class="form-group">
     <a asp-controller="Evaluations" asp-action="ListComments" asp-route-id="@Model.Id">Ver Comentários sobre a Propriedade</a>
 </div>
+@if(User.IsInRole("Client")){ 
 <div class="form-group">
     <a asp-controller="Reservations" asp-action="Create" asp-route-id="@Model.Id">
         <input type="button" value="Verificar Disponibilidade" class="btn btn-primary" />
     </a>
 </div>
+}
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>

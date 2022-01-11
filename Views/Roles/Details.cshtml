@@ -11,7 +11,7 @@
             <th>First Name</th>
             <th>Last Name</th>
             <th>Edit</th>
-            @if (Model.Nome.Equals("Owner_Employeer"))
+            @if (Model.Nome.Equals("Owner_Manager"))
             {
                 <th>Delete</th>
             }
@@ -26,7 +26,7 @@
             <td>@utilizador.FirstName</td>
             <td>@utilizador.LastName</td>
             <td><a class="btn btn-primary" asp-action="Edit">Edit</a></td>
-            @if (Model.Nome.Equals("Owner_Employeer"))
+            @if (Model.Nome.Equals("Owner_Manager"))
             {
             <td><a class="btn btn-danger" asp-action="Delete" asp-route-id="@utilizador.Id">Delete</a></td>
             }

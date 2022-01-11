@@ -9,22 +9,28 @@ using Airbnb_PWEB.Data;
 using Airbnb_PWEB.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Airbnb_PWEB.Controllers
 {
+   
+
     public class ReservationsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private UserManager<ApplicationUser> _userManager;
 
-        public ReservationsController(ApplicationDbContext context)
+       
+        public ReservationsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Reservations
         public async Task<IActionResult> Index()
         {
-            var reservesList = await _context.Reservations.Include(r => r.Property).Where(r => r.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier)).ToListAsync();
+            var reservesList = await _context.Reservations.Include(r => r.Property).Where(r => r.ApplicationUser.Id == User.FindFirstValue(ClaimTypes.NameIdentifier)).ToListAsync();
             if (reservesList == null)
             {
                 return NotFound();
@@ -37,7 +43,7 @@ namespace Airbnb_PWEB.Controllers
         {
 
             // mudar isto para listar as propriedades de quem sou dono
-            var reservesList = await _context.Reservations.Include(r => r.Property).Where(r => r.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier)).ToListAsync();
+            var reservesList = await _context.Reservations.Include(r => r.Property).Where(r => r.ApplicationUser.Id == User.FindFirstValue(ClaimTypes.NameIdentifier)).ToListAsync();
             if (reservesList == null)
             {
                 return NotFound();
@@ -68,6 +74,7 @@ namespace Airbnb_PWEB.Controllers
         }
 
         // GET: Reservations/Create
+        [Authorize(Roles = "Client")]
         public IActionResult Create()
         {
             return View();
@@ -78,11 +85,13 @@ namespace Airbnb_PWEB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReservationId,CheckIn,CheckOut,PropertyId,UserId,statusReservation")] Reservation reservation, int id)
+        [Authorize(Roles = "Client")]
+        public async Task<IActionResult> Create([Bind("ReservationId,CheckIn,CheckOut,PropertyId,ApplicationUser,statusReservation")] Reservation reservation, int id)
         {
             reservation.statusReservation = false;
             reservation.PropertyId = id;
-            reservation.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            reservation.ApplicationUser = await _userManager.GetUserAsync(User);
 
             if (ModelState.IsValid)
             {
@@ -103,6 +112,7 @@ namespace Airbnb_PWEB.Controllers
         }
 
         // GET: Reservations/Edit/5
+        [Authorize(Roles = "Client")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -125,7 +135,8 @@ namespace Airbnb_PWEB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ReservationId,CheckIn,CheckOut,PropertyId,UserId,statusReservation")] Reservation reservation)
+        [Authorize(Roles = "Client")]
+        public async Task<IActionResult> Edit(int id, [Bind("ReservationId,CheckIn,CheckOut,PropertyId,ApplicationUser,statusReservation")] Reservation reservation)
         {
             if (id != reservation.ReservationId)
             {
@@ -156,6 +167,7 @@ namespace Airbnb_PWEB.Controllers
         }
 
         // GET: Reservations/Delete/5
+        [Authorize(Roles = "Client")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -176,6 +188,7 @@ namespace Airbnb_PWEB.Controllers
         // POST: Reservations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Client")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var reservation = await _context.Reservations.FindAsync(id);

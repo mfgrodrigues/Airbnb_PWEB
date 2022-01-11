@@ -13,8 +13,6 @@ namespace Airbnb_PWEB.Models
 
         public DateTime CheckOut { get; set; }
 
-        public string UserId { get; set; }
-
         public int PropertyId { get; set; }
 
         public Property Property { get; set; }
@@ -24,5 +22,7 @@ namespace Airbnb_PWEB.Models
         public virtual List<Item> ItemsChecked { get; set; }
 
         public bool statusReservation { get; set; }
+
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }

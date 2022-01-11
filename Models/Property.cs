@@ -33,7 +33,7 @@ namespace Airbnb_PWEB.Models
 
         public Category Category { get; set; }
 
-        public string OwnerId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
     }
 
 }

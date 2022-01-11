@@ -196,7 +196,7 @@ namespace Airbnb_PWEB.Controllers
             {
                 foreach (var item in lista)
                 {
-                    var user = await _context.Users.Where(i => i.Id == item.UserId).FirstOrDefaultAsync();
+                    var user = await _context.Users.Where(i => i.Id == item.ApplicationUser.Id).FirstOrDefaultAsync();
                     var comment = await _context.Evaluation.Where(i => i.ReservationId == item.ReservationId).FirstOrDefaultAsync();
                     if(comment != null && user != null)
                     {
