@@ -36,7 +36,9 @@ namespace Airbnb_PWEB.Controllers
 
             if (User.IsInRole("Owner_Manager"))
             {
-                var applicationDbContext = _context.Properties.Include(p => p.Images).Where(p => p.ApplicationUser == currentUser).ToListAsync();
+                var user = await _userManager.GetUserAsync(User);
+                var company= _context.Companies.Where(c => c.Owner == user).FirstOrDefault();
+                var applicationDbContext = _context.Properties.Include(p => p.Images).Where(p => p.Company == company).ToListAsync();
                 return View(await applicationDbContext);
             }
             else {
@@ -78,9 +80,10 @@ namespace Airbnb_PWEB.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Owner_Manager")]
-        public async Task<IActionResult> Create([Bind("CategoryId,Id,Tittle,Description,pricePerNigth,Address,City,Amenities, ApplicationUser")] Property @property, List<IFormFile> files)
+        public async Task<IActionResult> Create([Bind("CategoryId,Id,Tittle,Description,pricePerNigth,Address,City,Amenities,CompanyId")] Property @property, List<IFormFile> files)
         {
-            property.ApplicationUser = await _userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User);
+            property.Company = _context.Companies.Where(c => c.Owner == user).FirstOrDefault(); // companhia do owner conectado no momento
             property.Images = new List<PropertyImage>();
             foreach (var file in files)
             {
@@ -138,7 +141,7 @@ namespace Airbnb_PWEB.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Owner_Manager")]
-        public async Task<IActionResult> Edit(int id, [Bind("CategoryId,Id,Tittle,Description,pricePerNigth,Address,City,Amenities, ApplicationUser")] Property @property)
+        public async Task<IActionResult> Edit(int id, [Bind("CategoryId,Id,Tittle,Description,pricePerNigth,Address,City,Amenities")] Property @property)
         {
             if (id != @property.Id)
             {

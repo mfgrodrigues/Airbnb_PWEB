@@ -25,5 +25,7 @@ namespace Airbnb_PWEB.Data
         public DbSet<Evaluation> Evaluation { get; set; }
 
         public DbSet<Item> Items { get; set; }
+
+        public DbSet<Company> Companies { get; set;}
     }
 }

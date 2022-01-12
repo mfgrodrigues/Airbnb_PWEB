@@ -13,7 +13,6 @@ namespace Airbnb_PWEB.Models
 
         [PersonalData]
         public string LastName { get; set; }
-        [PersonalData]
         public string FunctionRole { get; set; }
     }
 }

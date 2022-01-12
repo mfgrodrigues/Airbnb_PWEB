@@ -37,13 +37,24 @@
                 <input asp-for="Input.ConfirmPassword" class="form-control" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Input.FunctionRole"></label>
+                <div class="form-group">
+                    <label asp-for="Input.FunctionRole"></label>
                     <select asp-for="Input.FunctionRole" class="form-control">
+                        @if (User.IsInRole("Owner_Manager"))
+                        {
+                            <option value="Owner_Employeer">Funcionario Imóvel</option>
+                        }
+                        else{
                         <option value="Client">Cliente</option>
                         <option value="Owner_Manager">Proprietário Imóvel</option>
+                        }
+
                     </select>
+                </div>
+            
+            <div>
             <button type="submit" class="btn btn-primary">Register</button>
+            </div>
         </form>
     </div>
     <div class="col-md-6 col-md-offset-2">

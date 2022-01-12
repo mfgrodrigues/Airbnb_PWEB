@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Airbnb_PWEB.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Airbnb_PWEB.Areas.Identity.Pages.Account
 {
@@ -24,17 +26,20 @@ namespace Airbnb_PWEB.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         [BindProperty]
@@ -94,7 +99,28 @@ namespace Airbnb_PWEB.Areas.Identity.Pages.Account
                     if (Input.FunctionRole.Equals("Client"))
                         await _userManager.AddToRoleAsync(user, "Client");
                     else if (Input.FunctionRole.Equals("Owner_Manager"))
+                    {
                         await _userManager.AddToRoleAsync(user, "Owner_Manager");
+                        Company company = new Company()
+                        {
+                            Owner = user,
+                            Employeers = new List<ApplicationUser>()
+                        };
+                        _context.Add(company);
+                        await _context.SaveChangesAsync();
+
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, "Owner_Employeer");
+                        var owner = await _userManager.GetUserAsync(User);
+                        var company = _context.Companies.Include(c => c.Employeers).Where(c => c.Owner == owner).FirstOrDefault();
+                        company.Employeers.Add(user);
+                        _context.Update(company);
+
+                        await _context.SaveChangesAsync();
+
+                    }
 
 
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
