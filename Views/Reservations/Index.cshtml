@@ -68,10 +68,17 @@
                 @* @Html.DisplayFor(modelItem => item.statusReservation)*@
             </td>
             <td>
-                <a asp-controller="Evaluations" asp-action="Create" asp-route-id="@item.ReservationId">Avaliar Estadia</a> |
-                <a asp-controller="Items" asp-action="Create" asp-route-id="@item.ReservationId">CheckList</a> |
-                <a asp-action="Details" asp-route-id="@item.ReservationId">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@item.ReservationId">Eliminar</a>
+                @if (User.IsInRole("Client"))
+                {
+                    <a asp-controller="Evaluations" asp-action="Create" asp-route-id="@item.ReservationId">Avaliar Estadia</a>
+                    <a asp-controller="Items" asp-action="Create" asp-route-id="@item.ReservationId">CheckList</a>
+                    <a asp-action="Details" asp-route-id="@item.ReservationId">Detalhes</a>
+                    <a asp-action="Delete" asp-route-id="@item.ReservationId">Cancelar</a>
+                }
+                else if (User.IsInRole("Owner_Employeer,Owner_Manager"))
+                {
+                    <a asp-action="Details" asp-route-id="@item.ReservationId">Gerir Reserva</a>
+                }
             </td>
 
         </tr>

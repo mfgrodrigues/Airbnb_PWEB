@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Airbnb_PWEB.Models.MyEvaluationsViewModel>
+﻿@model IEnumerable<Airbnb_PWEB.Models.Evaluation>
 
 @{
     ViewData["Title"] = "Index";
@@ -32,23 +32,23 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Property.Tittle)
+                @Html.DisplayFor(modelItem => item.Reservation.Property.Tittle)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Reserve.CheckIn)
+                @Html.DisplayFor(modelItem => item.Reservation.CheckIn)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Reserve.CheckOut)
+                @Html.DisplayFor(modelItem => item.Reservation.CheckOut)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EvaluationComment.Classification)
+                @Html.DisplayFor(modelItem => item.Classification)
             </td>
              <td>
-                @Html.DisplayFor(modelItem => item.EvaluationComment.Comment)
+                @Html.DisplayFor(modelItem => item.Comment)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.EvaluationComment.EvaluationId">Editar</a> |
-                <a asp-action="Delete" asp-route-id="@item.EvaluationComment.EvaluationId">Apagar</a>
+                <a asp-action="Edit" asp-route-id="@item.EvaluationId">Editar</a> |
+                <a asp-action="Delete" asp-route-id="@item.EvaluationId">Apagar</a>
             </td>
         </tr>
 }

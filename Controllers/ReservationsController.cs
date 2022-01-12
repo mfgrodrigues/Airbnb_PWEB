@@ -13,8 +13,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Airbnb_PWEB.Controllers
 {
-   
 
+    [Authorize(Roles = "Owner_Manager,Client,Owner_Employeer")]
     public class ReservationsController : Controller
     {
         private readonly ApplicationDbContext _context;

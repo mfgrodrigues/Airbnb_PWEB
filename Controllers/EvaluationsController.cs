@@ -8,40 +8,37 @@ using Microsoft.EntityFrameworkCore;
 using Airbnb_PWEB.Data;
 using Airbnb_PWEB.Models;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace Airbnb_PWEB.Controllers
 {
     public class EvaluationsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private UserManager<ApplicationUser> _userManager;
 
-        public EvaluationsController(ApplicationDbContext context)
+        public EvaluationsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Evaluations
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index()    // cliente
         {
-            List<MyEvaluationsViewModel> myEvaluations = new List<MyEvaluationsViewModel>();
+            var currentUser = await _userManager.GetUserAsync(User);
+            var reserve = await _context.Reservations.Include(r => r.Property).Where(r => r.ApplicationUser == currentUser).ToListAsync();
+ 
 
-            var evaluationList = await _context.Evaluation.Where(r => r.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier)).Include(r => r.Reservation).ToListAsync();
+            var evaluationList = new List<Evaluation>();
+            foreach (var item in reserve)
+            {
+                evaluationList.Add(await _context.Evaluation.Include(r => r.Reservation).Where(r => r.Reservation == item).FirstOrDefaultAsync());
+
+            }
             if (evaluationList != null)
             {
-                foreach (var evaluation in evaluationList)
-                {
-
-                    MyEvaluationsViewModel evm = new MyEvaluationsViewModel
-                    {
-                        Property = await _context.Properties.Where(p => p.Id == evaluation.Reservation.PropertyId).FirstAsync(),
-                        Reserve = evaluation.Reservation,
-                        EvaluationComment = evaluation
-                    };
-
-                    myEvaluations.Add(evm); 
-
-                }
-                return View(myEvaluations);
+                return View(evaluationList);
             }
 
             return NotFound();
@@ -68,9 +65,14 @@ namespace Airbnb_PWEB.Controllers
         }
 
         // GET: Evaluations/Create
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
+            var evaluationAvailable = _context.Evaluation.Where(e => e.EvaluationId == id).Count();
+            if (evaluationAvailable > 0) {
+                return RedirectToAction(nameof(Index),"Reservations");
+            }
             //ViewData["ReservationId"] = new SelectList(_context.Reservations, "ReservationId", "ReservationId");
+
             return View();
         }
 
@@ -79,10 +81,10 @@ namespace Airbnb_PWEB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EvaluationId,Comment,Classification,UserId,ReservationId")] Evaluation evaluation,int id)
+        public async Task<IActionResult> Create([Bind("EvaluationId,Comment,Classification,ReservationId")] Evaluation evaluation,int id)
         {
             evaluation.ReservationId = id;
-            evaluation.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //evaluation.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             
             if (ModelState.IsValid)
             {
@@ -118,7 +120,7 @@ namespace Airbnb_PWEB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EvaluationId,Comment,Classification,UserId, ReservationId")] Evaluation evaluation)
+        public async Task<IActionResult> Edit(int id, [Bind("EvaluationId,Comment,Classification, ReservationId")] Evaluation evaluation)
         {
             if (id != evaluation.EvaluationId)
             {
@@ -130,7 +132,7 @@ namespace Airbnb_PWEB.Controllers
                 try
                 {
                     _context.Entry(evaluation).State = EntityState.Modified;
-                    _context.Entry(evaluation).Property(e => e.UserId).IsModified = false;
+                    //_context.Entry(evaluation).Property(e => e.UserId).IsModified = false;
                     _context.Entry(evaluation).Property(e => e.ReservationId).IsModified = false;  
                     _context.SaveChanges();
                 }
@@ -186,34 +188,27 @@ namespace Airbnb_PWEB.Controllers
             return _context.Evaluation.Any(e => e.EvaluationId == id);
         }
 
-        public async Task<IActionResult> ListComments(int id) // id da propriedade , id da reserva para saber o id da avaliacao
+        public async Task<IActionResult> ListComments(int? id) // id da propriedade , id da reserva para saber o id da avaliacao
         {
-            var lista = _context.Reservations.Where(r => r.PropertyId == id).ToList(); // ir à lista de reservas buscar todas as reservas que tem o id da propriedade 
+            if (id == null)
+                return NotFound();
 
-            List<PropertyEvaluationViewModel> propertyEvaluations = new List<PropertyEvaluationViewModel>();
-            
-            if(lista != null)
+            var reserve = await _context.Reservations.Include(r => r.Property).Include(r=> r.ApplicationUser).Where(r => r.PropertyId == id).ToListAsync();
+            if (reserve == null)
+                return NotFound();
+
+            var evaluationList = new List<Evaluation>();
+            foreach (var item in reserve)
             {
-                foreach (var item in lista)
-                {
-                    var user = await _context.Users.Where(i => i.Id == item.ApplicationUser.Id).FirstOrDefaultAsync();
-                    var comment = await _context.Evaluation.Where(i => i.ReservationId == item.ReservationId).FirstOrDefaultAsync();
-                    if(comment != null && user != null)
-                    {
-                        PropertyEvaluationViewModel pevm = new PropertyEvaluationViewModel
-                        {
-                            EvaluationId = user.FirstName + " " + user.LastName,
-                            Comment = comment
-                        };
-                        propertyEvaluations.Add(pevm);
-                    }
-                }
-                    return View(propertyEvaluations);
+                evaluationList.Add(await _context.Evaluation.Include(r => r.Reservation).Where(r => r.Reservation == item).FirstOrDefaultAsync());
+
             }
-            else
+            if (evaluationList != null)
             {
-                return NotFound();  
+                return View(evaluationList);
             }
+
+            return NotFound();
         }
     }
 }
