@@ -36,10 +36,16 @@ namespace Airbnb_PWEB.Controllers
 
             if (User.IsInRole("Owner_Manager"))
             {
-                var user = await _userManager.GetUserAsync(User);
-                var company= _context.Companies.Where(c => c.Owner == user).FirstOrDefault();
+                var company= _context.Companies.Where(c => c.Owner == currentUser).FirstOrDefault();
                 var applicationDbContext = _context.Properties.Include(p => p.Images).Where(p => p.Company == company).ToListAsync();
                 return View(await applicationDbContext);
+            }
+            else if (User.IsInRole("Owner_Employeer"))
+            {
+                var myCompany = _context.Companies.Where(c => c.Employeers.Contains(currentUser)).FirstOrDefault();
+                var applicationDbContext = _context.Properties.Include(p => p.Images).Where(p => p.Company == myCompany).ToListAsync();
+                return View(await applicationDbContext);
+
             }
             else {
                 var applicationDbContext = _context.Properties.Include(p => p.Images);

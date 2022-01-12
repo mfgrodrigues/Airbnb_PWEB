@@ -28,29 +28,45 @@ namespace Airbnb_PWEB.Controllers
         }
 
         // GET: Reservations
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id) // index para funcionarios e gestor
         {
-            var reservesList = await _context.Reservations.Include(r => r.Property).Where(r => r.ApplicationUser.Id == User.FindFirstValue(ClaimTypes.NameIdentifier)).ToListAsync();
-            if (reservesList == null)
+            if (id == null)     // index para clientes
             {
-                return NotFound();
-            }
+                var currentUser2 = await _userManager.GetUserAsync(User);
+                if (currentUser2 == null)
+                    return NotFound();
 
-            return View(reservesList);
+                var reservationList2 = await _context.Reservations.Include(r => r.Property).Where(r => r.ApplicationUser == currentUser2).ToListAsync();
+
+                if (reservationList2 == null)
+                    return NotFound();
+
+                return View(reservationList2);
+            }
+            var currentUser = await _userManager.GetUserAsync(User);
+
+            var reservationList = await _context.Reservations.Include(r => r.ApplicationUser).Where(r => r.PropertyId == id).ToListAsync();
+
+            if (reservationList == null)
+                return NotFound();
+
+            return View(reservationList);
         }
 
-        public async Task<IActionResult> IndexEmployees()
-        {
 
-            // mudar isto para listar as propriedades de quem sou dono
-            var reservesList = await _context.Reservations.Include(r => r.Property).Where(r => r.ApplicationUser.Id == User.FindFirstValue(ClaimTypes.NameIdentifier)).ToListAsync();
-            if (reservesList == null)
-            {
-                return NotFound();
-            }
 
-            return View(reservesList);
-        }
+        //public async Task<IActionResult> IndexEmployees()
+        //{
+
+        //    // mudar isto para listar as propriedades de quem sou dono
+        //    var reservesList = await _context.Reservations.Include(r => r.Property).Where(r => r.ApplicationUser.Id == User.FindFirstValue(ClaimTypes.NameIdentifier)).ToListAsync();
+        //    if (reservesList == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(reservesList);
+        //}
 
 
         // GET: Reservations/Details/5

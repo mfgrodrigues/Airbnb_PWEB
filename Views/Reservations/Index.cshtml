@@ -9,11 +9,20 @@
 <table class="table">
     <thead>
         <tr>
+            @if (User.IsInRole("Client"))
+            {
+                <th>
+                    Propriedade
+                </th>
+            }
+            else
+            {
+                <th>
+                    Cliente
+                </th>
+            }
             <th>
-                Propriedade
-            </th>
-            <th>
-               Check-In
+                Check-In
             </th>
             <th>
                 Check-Out
@@ -21,42 +30,51 @@
             <th>
                 @Html.DisplayNameFor(model => model.statusReservation)
             </th>
-            
+
             <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Property.Tittle)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CheckIn)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CheckOut)
-                </td>
-                <td>
-                    @if (item.statusReservation == true)
-                    {
-                        <span class=" btn btn-success ">Confirmed</span>
-                    }
-                    else
-                    {
-                        <span class=" btn btn-warning ">Pending</span>
-                    }
-                    @* @Html.DisplayFor(modelItem => item.statusReservation)*@
-                </td>
-                <td>
-                    <a asp-controller="Evaluations" asp-action="Create" asp-route-id="@item.ReservationId">Avaliar Estadia</a> |
-                    <a asp-controller="Items" asp-action="Create" asp-route-id="@item.ReservationId">CheckList</a> |
-                    <a asp-action="Details" asp-route-id="@item.ReservationId">Detalhes</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ReservationId">Eliminar</a>
-                </td>
-             
-            </tr>
+        <tr>
+            @if (User.IsInRole("Client"))
+            {
+            <td>
+                @Html.DisplayFor(modelItem => item.Property.Tittle)
+            </td>
+            }
+            else
+            {
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationUser.Email)
+            </td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.CheckIn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CheckOut)
+            </td>
+            <td>
+                @if (item.statusReservation == true)
+                {
+                    <span class=" btn btn-success ">Confirmed</span>
+                }
+                else
+                {
+                    <span class=" btn btn-warning ">Pending</span>
+                }
+                @* @Html.DisplayFor(modelItem => item.statusReservation)*@
+            </td>
+            <td>
+                <a asp-controller="Evaluations" asp-action="Create" asp-route-id="@item.ReservationId">Avaliar Estadia</a> |
+                <a asp-controller="Items" asp-action="Create" asp-route-id="@item.ReservationId">CheckList</a> |
+                <a asp-action="Details" asp-route-id="@item.ReservationId">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.ReservationId">Eliminar</a>
+            </td>
+
+        </tr>
         }
     </tbody>
 </table>

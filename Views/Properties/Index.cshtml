@@ -36,10 +36,10 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <th> 
+            <th>
                 <img class="img-thumbnail" src="data:@item.Images[0].FileType;base64,@Convert.ToBase64String(item.Images[0].Data, 0, item.Images[0].Data.Length)" style="width:250px;height:auto">
             </th>
-                    
+
             <td>
                 @Html.DisplayFor(modelItem => item.Tittle)
             </td>
@@ -52,18 +52,23 @@
             <td>
                 @Html.DisplayFor(modelItem => item.City)
             </td>
-            <td width = "11%">
+            <td width="11%">
                 @if (User.IsInRole("Owner_Manager"))
                 {
-                 <a asp-action="Edit" asp-route-id="@item.Id"><img src = "resources/edit.svg"  width = "30%" alt="Editar"/></a>
+                    <a asp-action="Edit" asp-route-id="@item.Id"><img src="resources/edit.svg" width="30%" alt="Editar" /></a>
                 }
-                <a asp-action="Details" asp-route-id="@item.Id"><img src = "resources/details.svg" width = "30%" alt="Detalhes"/></a>
-                 @if (User.IsInRole("Owner_Manager"))
+                <a asp-action="Details" asp-route-id="@item.Id"><img src="resources/details.svg" width="30%" alt="Detalhes" /></a>
+                @if (User.IsInRole("Owner_Manager"))
                 {
-                 <a asp-action="Delete" asp-route-id="@item.Id"><img src = "resources/delete.svg" width = "30%" alt="Remover"/></a>
+                    <a asp-action="Delete" asp-route-id="@item.Id"><img src="resources/delete.svg" width="30%" alt="Remover" /></a>
                 }
-            </td>
-        </tr>
+                @if (User.IsInRole("Owner_Employeer"))
+                {
+                    <a class="btn btn-primary" asp-controller="Reservations" asp-action="Index" asp-route-id="@item.Id"> Reservas</a>
+      
+                }
+                </td>
+            </tr>
 }
     </tbody>
 </table>
