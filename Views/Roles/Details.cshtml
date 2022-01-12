@@ -3,36 +3,48 @@
 <h1> Detalhes @Model.Nome</h1>
 <br />
 <br />
-<table class="table table-bordered table-hover">
+<table class="table table-bordered table-hover" id="mytable">
     <thead>
         <tr>
             <th>Id</th>
-            <th>Username</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Edit</th>
-            @if (Model.Nome.Equals("Owner_Manager"))
-            {
-                <th>Delete</th>
-            }
-            </tr>
+            <th>Role</th>
+            <th>Primeiro Nome</th>
+            <th>Ultimo Nome</th>
+            <th>Email</th>
+            <th>Estado Conta</th>
+            <th>Opções</th>
+        </tr>
     </thead>
     <tbody>
         @foreach (var utilizador in Model.Utilizadores)
         {
         <tr>
             <td>@utilizador.Id</td>
-            <td>@utilizador.UserName</td>
+            <td>@utilizador.FunctionRole</td>
             <td>@utilizador.FirstName</td>
             <td>@utilizador.LastName</td>
-            <td><a class="btn btn-primary" asp-action="Edit">Edit</a></td>
-            @if (Model.Nome.Equals("Owner_Manager"))
-            {
-            <td><a class="btn btn-danger" asp-action="Delete" asp-route-id="@utilizador.Id">Delete</a></td>
+            <td>@utilizador.UserName</td>
+            @if (@utilizador.EmailConfirmed) {
+                <td>Ativada</td>
             }
+            else
+            {
+             <td>Desativada</td>
+            }
+            <td>
+                <a class="btn btn-primary" asp-route-id=@utilizador.Id asp-action="Edit">Edit</a>
+                <a class="btn btn-primary" asp-route-id="@utilizador.Id" asp-action="ManageAccounts">Gerir</a>
+            </td>
         </tr>
         }
     </tbody>
 </table>
 
 <a class="btn btn-primary" asp-action="Index">Back to List Roles</a>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#mytable').DataTable();
+        });
+    </script>
+}

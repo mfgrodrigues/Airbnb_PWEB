@@ -1,29 +1,43 @@
-﻿@model IEnumerable<Airbnb_PWEB.Models.Company>
+﻿@model Airbnb_PWEB.Models.Company
 
-@{
-    ViewData["Title"] = "Index";
-}
+<h1>Funcionários da Empresa</h1>
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table class="table" id="mytable">
     <thead>
         <tr>
-            <th></th>
+            <th>Primeiro Nome</th>
+            <th>Ultimo Nome</th>
+            <th>Email</th>
+            <th>Estado Conta</th>
+            <th>Opções</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
+        @foreach (var utilizador in Model.Employeers)
+        {
+
+            <td>@utilizador.FirstName</td>
+            <td>@utilizador.LastName</td>
+            <td>@utilizador.Email</td>
+            @if (@utilizador.EmailConfirmed)
+            {
+            <td>Ativada</td>
+            }
+            else
+            {
+            <td>Desativada</td>
+            }
             <td>
-                <a asp-action="Edit" asp-route-id="@item.CompanyId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CompanyId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.CompanyId">Delete</a>
+            <a class="btn btn-primary"  asp-controller="Roles" asp-action="Edit" asp-route-id=@utilizador.Id asp-action="Edit">Edit</a>
+            <a class="btn btn-primary" asp-controller="Roles" asp-action="ManageAccounts" asp-route-id="@utilizador.Id" >Gerir</a>
             </td>
-        </tr>
-}
+        }
     </tbody>
-</table>
+    </table>
+@section Scripts{
+    <script>
+    $(document).ready(function () {
+        $('#mytable').DataTable();
+    });
+    </script>
+}

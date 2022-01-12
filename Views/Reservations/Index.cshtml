@@ -6,7 +6,7 @@
 
 <h1>Lista de Reservas</h1>
 
-<table class="table">
+<table class="table" id="mytable">
     <thead>
         <tr>
             @if (User.IsInRole("Client"))
@@ -37,51 +37,58 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            @if (User.IsInRole("Client"))
-            {
-            <td>
-                @Html.DisplayFor(modelItem => item.Property.Tittle)
-            </td>
-            }
-            else
-            {
-            <td>
-                @Html.DisplayFor(modelItem => item.ApplicationUser.Email)
-            </td>
-            }
-            <td>
-                @Html.DisplayFor(modelItem => item.CheckIn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CheckOut)
-            </td>
-            <td>
-                @if (item.statusReservation == true)
+            <tr>
+                @if (User.IsInRole("Client"))
                 {
-                    <span class=" btn btn-success ">Confirmed</span>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Property.Tittle)
+                    </td>
                 }
                 else
                 {
-                    <span class=" btn btn-warning ">Pending</span>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ApplicationUser.Email)
+                    </td>
                 }
-                @* @Html.DisplayFor(modelItem => item.statusReservation)*@
-            </td>
-            <td>
-                @if (User.IsInRole("Client"))
-                {
-                    <a asp-controller="Evaluations" asp-action="Create" asp-route-id="@item.ReservationId">Avaliar Estadia</a>
-                    <a asp-controller="Items" asp-action="Create" asp-route-id="@item.ReservationId">CheckList</a>
-                    <a asp-action="Details" asp-route-id="@item.ReservationId">Detalhes</a>
-                    <a asp-action="Delete" asp-route-id="@item.ReservationId">Cancelar</a>
-                }
-                else if (User.IsInRole("Owner_Employeer,Owner_Manager"))
-                {
-                    <a asp-action="Details" asp-route-id="@item.ReservationId">Gerir Reserva</a>
-                }
-            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CheckIn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CheckOut)
+                </td>
+                <td>
+                    @if (item.statusReservation == true)
+                    {
+                        <span class=" btn btn-success ">Confirmed</span>
+                    }
+                    else
+                    {
+                        <span class=" btn btn-warning ">Pending</span>
+                    }
+                    @* @Html.DisplayFor(modelItem => item.statusReservation)*@
+                </td>
+                <td>
+                    @if (User.IsInRole("Client"))
+                    {
+                        <a asp-controller="Evaluations" asp-action="Create" asp-route-id="@item.ReservationId">Avaliar Estadia</a>
+                        <a asp-controller="Items" asp-action="Create" asp-route-id="@item.ReservationId">CheckList</a>
+                        <a asp-action="Details" asp-route-id="@item.ReservationId">Detalhes</a>
+                        <a asp-action="Delete" asp-route-id="@item.ReservationId">Cancelar</a>
+                    }
+                    else if (User.IsInRole("Owner_Employeer,Owner_Manager"))
+                    {
+                        <a asp-action="Details" asp-route-id="@item.ReservationId">Gerir Reserva</a>
+                    }
+                </td>
 
-        </tr>
+            </tr>
         }
     </tbody>
 </table>
+@section Scripts{
+    <script>
+    $(document).ready(function () {
+        $('#mytable').DataTable();
+    });
+    </script>
+}

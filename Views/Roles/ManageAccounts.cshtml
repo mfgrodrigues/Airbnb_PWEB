@@ -1,0 +1,50 @@
+﻿@model Airbnb_PWEB.Models.ApplicationUser
+
+<h1>Gerir Conta</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            Email
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+
+    </dl>
+    @if (!Model.EmailConfirmed)
+    {
+        <a class="btn btn-primary" asp-action="Ativate" asp-route-id=@Model.Id>Ativar</a>
+    }
+    else
+    {
+        <a class="btn btn-danger" asp-action="Desactivate" asp-route-id=@Model.Id>Desativar</a>
+    }
+
+        <a class="btn btn-primary" asp-action="Back">Back to List</a>
+</div>

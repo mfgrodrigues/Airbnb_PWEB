@@ -2,33 +2,41 @@
 
 <h1>Lista de Comentários da Propriedade</h1>
 
-<table class="table">
-       <thead>
-           <tr>
-               <th>
-                  Nome
-               </th>
-               <th>
-                  Classificação
-               </th>
-               <th>
-                   Comentário
-               </th>
-           </tr>
-        </thead>
-    <tbody>
-@foreach (var item in Model) {
+<table class="table" id="mytable">
+    <thead>
         <tr>
-            <td>
-                @item.Reservation.ApplicationUser.Email
-            </td>
-            <td>
-                @item.Classification
-            </td>
-            <td>
-                @item.Comment
-            </td>
+            <th>
+                Nome
+            </th>
+            <th>
+                Classificação
+            </th>
+            <th>
+                Comentário
+            </th>
         </tr>
-}
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Reservation.ApplicationUser.Email
+                </td>
+                <td>
+                    @item.Classification
+                </td>
+                <td>
+                    @item.Comment
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+@section Scripts{
+    <script>
+    $(document).ready(function () {
+        $('#mytable').DataTable();
+    });
+    </script>
+}

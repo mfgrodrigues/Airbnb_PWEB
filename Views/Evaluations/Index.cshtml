@@ -7,7 +7,7 @@
 <h1>Lista de Comentários</h1>
 
 
-<table class="table">
+<table class="table" id="mytable">
     <thead>
         <tr>
             <th>
@@ -29,28 +29,36 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Reservation.Property.Tittle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Reservation.CheckIn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Reservation.CheckOut)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Classification)
-            </td>
-             <td>
-                @Html.DisplayFor(modelItem => item.Comment)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.EvaluationId">Editar</a> |
-                <a asp-action="Delete" asp-route-id="@item.EvaluationId">Apagar</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Reservation.Property.Tittle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Reservation.CheckIn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Reservation.CheckOut)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Classification)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comment)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.EvaluationId">Editar</a> |
+                    <a asp-action="Delete" asp-route-id="@item.EvaluationId">Apagar</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+@section Scripts{
+    <script>
+    $(document).ready(function () {
+        $('#mytable').DataTable();
+    });
+    </script>
+}

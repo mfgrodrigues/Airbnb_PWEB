@@ -7,22 +7,29 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Airbnb_PWEB.Data;
 using Airbnb_PWEB.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Airbnb_PWEB.Controllers
 {
     public class CompaniesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private UserManager<ApplicationUser> _userManager;
 
-        public CompaniesController(ApplicationDbContext context)
+        public CompaniesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Companies
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Companies.ToListAsync());
+            var currentUser = await _userManager.GetUserAsync(User);
+
+            var company = await _context.Companies.Include(c => c.Employeers).Where(c => c.Owner == currentUser).FirstOrDefaultAsync();
+
+            return View(company);
         }
 
         // GET: Companies/Details/5

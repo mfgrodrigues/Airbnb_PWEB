@@ -3,13 +3,13 @@
 <h1>Lista de Roles</h1>
 
 <br />
-<table class="table table-bordered table-hover~">
+<table class="table table-bordered table-hover" id="mytable">
 
     <thead>
         <tr>
             <th>Id</th>
-            <th>Name</th>
-            <th>Details</th>
+            <th>Nome</th>
+            <th>Detalhes</th>
         </tr>
     </thead>
     <tbody>
@@ -27,3 +27,10 @@
 
 
 </table>
+@section Scripts{
+    <script>
+    $(document).ready(function () {
+        $('#mytable').DataTable();
+    });
+    </script>
+}
