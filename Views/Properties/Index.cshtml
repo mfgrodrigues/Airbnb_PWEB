@@ -19,10 +19,10 @@
                 Imóvel
             </th>
             <th>
-                Título
+                Categoria
             </th>
             <th>
-                Descrição
+                Título
             </th>
             <th>
                 Preço/Noite
@@ -42,10 +42,10 @@
                 </th>
 
                 <td>
-                    @Html.DisplayFor(modelItem => item.Tittle)
+                    @Html.DisplayFor(modelItem => item.Category.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
+                    @Html.DisplayFor(modelItem => item.Tittle)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.pricePerNigth)

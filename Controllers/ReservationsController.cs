@@ -147,7 +147,7 @@ namespace Airbnb_PWEB.Controllers
         }
 
         // GET: Reservations/Edit/5
-        [Authorize(Roles = "Client")]
+        [Authorize(Roles = "Owner_Employeer")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -170,10 +170,11 @@ namespace Airbnb_PWEB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Client")]
-        public async Task<IActionResult> Edit(int id, [Bind("ReservationId,CheckIn,CheckOut,PropertyId,ApplicationUser, Status")] Reservation reservation)
+        [Authorize(Roles = "Owner_Employeer")]
+        public async Task<IActionResult> Edit(int id, Reservation reservation)
         {
-            if (id != reservation.ReservationId)
+            var updateReservation = _context.Reservations.Find(id);
+            if (updateReservation == null)
             {
                 return NotFound();
             }
@@ -182,12 +183,13 @@ namespace Airbnb_PWEB.Controllers
             {
                 try
                 {
-                    _context.Update(reservation);
+                    updateReservation.ApprovalComment = reservation.ApprovalComment;
+                    _context.Update(updateReservation);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ReservationExists(reservation.ReservationId))
+                    if (!ReservationExists(updateReservation.ReservationId))
                     {
                         return NotFound();
                     }
@@ -196,7 +198,7 @@ namespace Airbnb_PWEB.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { id = updateReservation.PropertyId });
             }
             return View(reservation);
         }

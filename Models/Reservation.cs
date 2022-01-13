@@ -26,6 +26,8 @@ namespace Airbnb_PWEB.Models
         public ApplicationUser ApplicationUser { get; set; }
 
         public ClientEvaluation ClientEvaluation{ get; set; }
+
+        public String ApprovalComment { get; set; }
     }
     public enum StatusReservation { Pendente, Cancelada, Aprovada, Entregue, Finalizada }
 }

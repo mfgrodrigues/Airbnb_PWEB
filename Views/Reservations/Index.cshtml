@@ -27,10 +27,6 @@
             <th>
                 Check-Out
             </th>
-            <th>
-               @* @Html.DisplayNameFor(model => model.statusReservation)*@
-            </th>
-
             <th></th>
         </tr>
     </thead>
@@ -79,7 +75,7 @@
                         }
                         <a asp-controller="Items" asp-action="Create" asp-route-id="@item.ReservationId">CheckList</a>
                         <a asp-action="Details" asp-route-id="@item.ReservationId">Detalhes</a>
-                        <a asp-action="Delete" asp-route-id="@item.ReservationId">Cancelar</a>
+                        <a asp-action="Delete" asp-route-id="@item.ReservationId">Eliminar</a>
                     }
                     else if (User.IsInRole("Owner_Employeer"))
                     {
@@ -89,6 +85,10 @@
                             <a asp-controller="ClientEvaluations" asp-action="Index" asp-route-id="@item.ApplicationUser.Id">Avaliação Cliente</a>
                             <a class="btn btn-primary" asp-action="Confirm" asp-route-id=@item.ReservationId>Confirmar</a>
                             <a class="btn btn-primary" asp-action="Cancel" asp-route-id=@item.ReservationId>Cancelar</a>
+                        }
+                        @if(@item.Status == StatusReservation.Cancelada)
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.ReservationId">Adicionar Comentário</a>
                         }
                     }
                     else if (User.IsInRole("Owner_Manager"))
