@@ -2,9 +2,9 @@
 
 namespace Airbnb_PWEB.Models
 {
-    public class PropertyEvaluationViewModel
-    {
-        public string EvaluationId { get; set; }    
-        public Evaluation Comment { get; set; }
-    }
+    //public class PropertyEvaluationViewModel
+    //{
+    //    public string EvaluationId { get; set; }    
+    //    public Evaluation Comment { get; set; }
+    //}
 }

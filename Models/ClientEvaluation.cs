@@ -9,6 +9,8 @@ namespace Airbnb_PWEB.Models
     {
         public int ClientEvaluationId { get; set; }
 
+        public Company Company { get; set; }
+
         public string Comment { get; set; }
 
         public int ReservationId { get; set; }

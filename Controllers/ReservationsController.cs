@@ -28,7 +28,7 @@ namespace Airbnb_PWEB.Controllers
         }
 
         // GET: Reservations
-        public async Task<IActionResult> Index(int? id) // index para funcionarios e gestor
+        public async Task<IActionResult> Index(int? id) 
         {
             if (id == null)     // index para clientes
             {
@@ -43,6 +43,7 @@ namespace Airbnb_PWEB.Controllers
 
                 return View(reservationList2);
             }
+            // index para funcionarios e gestor
             var currentUser = await _userManager.GetUserAsync(User);
 
             var reservationList = await _context.Reservations.Include(r => r.ApplicationUser).Where(r => r.PropertyId == id).ToListAsync();

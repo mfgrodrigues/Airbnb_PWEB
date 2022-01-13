@@ -29,11 +29,13 @@ namespace Airbnb_PWEB.Controllers
             var currentUser = await _userManager.GetUserAsync(User);
             var reserve = await _context.Reservations.Include(r => r.Property).Where(r => r.ApplicationUser == currentUser).ToListAsync();
  
-
             var evaluationList = new List<Evaluation>();
+
             foreach (var item in reserve)
             {
-                evaluationList.Add(await _context.Evaluation.Include(r => r.Reservation).Where(r => r.Reservation == item).FirstOrDefaultAsync());
+                var evaluation = await _context.Evaluation.Include(r => r.Reservation).Where(r => r.Reservation == item).FirstOrDefaultAsync();
+                if(evaluation != null)
+                    evaluationList.Add(evaluation);
 
             }
             if (evaluationList != null)
@@ -67,7 +69,7 @@ namespace Airbnb_PWEB.Controllers
         // GET: Evaluations/Create
         public IActionResult Create(int id)
         {
-            var evaluationAvailable = _context.Evaluation.Where(e => e.EvaluationId == id).Count();
+            var evaluationAvailable = _context.Evaluation.Where(e => e.ReservationId == id).Count();
             if (evaluationAvailable > 0) {
                 return RedirectToAction(nameof(Index),"Reservations");
             }
@@ -200,7 +202,9 @@ namespace Airbnb_PWEB.Controllers
             var evaluationList = new List<Evaluation>();
             foreach (var item in reserve)
             {
-                evaluationList.Add(await _context.Evaluation.Include(r => r.Reservation).Where(r => r.Reservation == item).FirstOrDefaultAsync());
+                var evaluation = await _context.Evaluation.Include(r => r.Reservation).Where(r => r.Reservation == item).FirstOrDefaultAsync();
+                if(evaluation != null)
+                    evaluationList.Add(evaluation);
 
             }
             if (evaluationList != null)

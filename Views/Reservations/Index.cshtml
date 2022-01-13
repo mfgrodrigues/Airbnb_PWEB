@@ -77,6 +77,7 @@
                     }
                     else if (User.IsInRole("Owner_Employeer"))
                     {
+                        <a asp-controller="ClientEvaluations" asp-action="Index" asp-route-id="@item.ApplicationUser.Id">Avaliações Cliente</a>
                         <a asp-action="Details" asp-route-id="@item.ReservationId">Gerir Reserva</a>
                     }
                     else if (User.IsInRole("Owner_Manager"))
