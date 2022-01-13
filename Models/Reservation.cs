@@ -24,5 +24,7 @@ namespace Airbnb_PWEB.Models
         public bool statusReservation { get; set; }
 
         public ApplicationUser ApplicationUser { get; set; }
+
+        public ClientEvaluation ClientEvaluation{ get; set; }
     }
 }

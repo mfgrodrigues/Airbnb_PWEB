@@ -75,9 +75,13 @@
                         <a asp-action="Details" asp-route-id="@item.ReservationId">Detalhes</a>
                         <a asp-action="Delete" asp-route-id="@item.ReservationId">Cancelar</a>
                     }
-                    else if (User.IsInRole("Owner_Employeer,Owner_Manager"))
+                    else if (User.IsInRole("Owner_Employeer"))
                     {
                         <a asp-action="Details" asp-route-id="@item.ReservationId">Gerir Reserva</a>
+                    }
+                    else if (User.IsInRole("Owner_Manager"))
+                    {
+                        <a asp-controller="ClientEvaluations" asp-action="Create" asp-route-id="@item.ReservationId">Avaliar Cliente</a>
                     }
                 </td>
 

@@ -52,23 +52,6 @@ namespace Airbnb_PWEB.Controllers
 
             return View(reservationList);
         }
-
-
-
-        //public async Task<IActionResult> IndexEmployees()
-        //{
-
-        //    // mudar isto para listar as propriedades de quem sou dono
-        //    var reservesList = await _context.Reservations.Include(r => r.Property).Where(r => r.ApplicationUser.Id == User.FindFirstValue(ClaimTypes.NameIdentifier)).ToListAsync();
-        //    if (reservesList == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(reservesList);
-        //}
-
-
         // GET: Reservations/Details/5
         public async Task<IActionResult> Details(int? id)
         {

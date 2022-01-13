@@ -63,7 +63,7 @@
                     {
                         <a asp-action="Delete" asp-route-id="@item.Id"><img src="resources/delete.svg" width="30%" alt="Remover" /></a>
                     }
-                    @if (User.IsInRole("Owner_Employeer"))
+                    @if (User.IsInRole("Owner_Employeer") || User.IsInRole("Owner_Manager") )
                     {
                         <a class="btn btn-primary" asp-controller="Reservations" asp-action="Index" asp-route-id="@item.Id"> Reservas</a>
 

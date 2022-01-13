@@ -35,32 +35,36 @@
                                 <input type="submit" value="Search" />
                             </form>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="Index">Reservas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Items" asp-action="Index">Items</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Evaluations" asp-action="Index">Comentários</a>
-                        </li>
-                        @if(User.IsInRole("Admin")){
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">Admin Roles</a>
-                        </li>
-                        }
-                        @if (User.IsInRole("Owner_Manager"))
+                        @if (User.IsInRole("Client"))
                         {
-                            <div class="dropdown">
-                                <button class="dropbtn">Funcionários</button>
-                                <div class="dropdown-content">
-                                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Novo Funcionário</a>
-                                    <a class="nav-link text-dark" asp-controller="Companies" asp-action="Index">Gerir Funcionários</a>
-                                </div>
-                            </div>
-
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="Index">Minhas Reservas</a>
+                            </li>
                         }
-                    </ul>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Items" asp-action="Index">Items</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Evaluations" asp-action="Index">Comentários</a>
+                            </li>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">Admin Roles</a>
+                                </li>
+                            }
+                            @if (User.IsInRole("Owner_Manager"))
+                            {
+                                <div class="dropdown">
+                                    <button class="dropbtn">Funcionários</button>
+                                    <div class="dropdown-content">
+                                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Novo Funcionário</a>
+                                        <a class="nav-link text-dark" asp-controller="Companies" asp-action="Index">Gerir Funcionários</a>
+                                    </div>
+                                </div>
+
+                            }
+                        </ul>
                     <partial name="_LoginPartial" />
                 </div>
             </div>
