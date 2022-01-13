@@ -53,6 +53,41 @@ namespace Airbnb_PWEB.Controllers
 
             return View(reservationList);
         }
+
+        public async Task<IActionResult> Confirm(int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+            var reservation = await _context.Reservations.FindAsync(id);
+            reservation.Status = StatusReservation.Aprovada;
+            if (ModelState.IsValid)
+            {
+                _context.Update(reservation);
+                await _context.SaveChangesAsync();
+
+            }
+            return RedirectToAction(nameof(Index), new { id = reservation.PropertyId });
+        }
+
+        public async Task<IActionResult> Cancel(int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+            var reservation = await _context.Reservations.FindAsync(id);
+            reservation.Status = StatusReservation.Cancelada;
+            if (ModelState.IsValid)
+            {
+                _context.Update(reservation);
+                await _context.SaveChangesAsync();
+
+            }
+            return RedirectToAction(nameof(Index), new { id = reservation.PropertyId });
+        }
+
         // GET: Reservations/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -86,9 +121,9 @@ namespace Airbnb_PWEB.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Client")]
-        public async Task<IActionResult> Create([Bind("ReservationId,CheckIn,CheckOut,PropertyId,ApplicationUser,statusReservation")] Reservation reservation, int id)
+        public async Task<IActionResult> Create([Bind("ReservationId,CheckIn,CheckOut,PropertyId,ApplicationUser,Status")] Reservation reservation, int id)
         {
-            reservation.statusReservation = false;
+            reservation.Status = StatusReservation.Pendente;
             reservation.PropertyId = id;
 
             reservation.ApplicationUser = await _userManager.GetUserAsync(User);
@@ -136,7 +171,7 @@ namespace Airbnb_PWEB.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Client")]
-        public async Task<IActionResult> Edit(int id, [Bind("ReservationId,CheckIn,CheckOut,PropertyId,ApplicationUser,statusReservation")] Reservation reservation)
+        public async Task<IActionResult> Edit(int id, [Bind("ReservationId,CheckIn,CheckOut,PropertyId,ApplicationUser, Status")] Reservation reservation)
         {
             if (id != reservation.ReservationId)
             {

@@ -27,11 +27,13 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Reservation.ReservationId)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ClientEvaluationId">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.ClientEvaluationId">Delete</a>
-            </td>
+                @if (User.IsInRole("Owner_Manager"))
+                {
+                    <td>
+                    <a asp-action="Edit" asp-route-id="@item.ClientEvaluationId">Editar</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ClientEvaluationId">Eliminar</a>
+                    </td>
+                }
         </tr>
 }
     </tbody>
-</table>

@@ -28,7 +28,7 @@
                 Check-Out
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.statusReservation)
+               @* @Html.DisplayNameFor(model => model.statusReservation)*@
             </th>
 
             <th></th>
@@ -57,28 +57,39 @@
                     @Html.DisplayFor(modelItem => item.CheckOut)
                 </td>
                 <td>
-                    @if (item.statusReservation == true)
+                    @if (item.Status == StatusReservation.Aprovada)
                     {
-                        <span class=" btn btn-success ">Confirmed</span>
+                        <span class=" btn btn-success ">Aprovada</span>
+                    }
+                    else if (item.Status == StatusReservation.Cancelada)
+                    {
+                        <span class=" btn btn-danger">Cancelada</span>
                     }
                     else
                     {
-                        <span class=" btn btn-warning ">Pending</span>
+                        <span class=" btn btn-warning">Pendente</span>
                     }
-                    @* @Html.DisplayFor(modelItem => item.statusReservation)*@
                 </td>
                 <td>
                     @if (User.IsInRole("Client"))
                     {
-                        <a asp-controller="Evaluations" asp-action="Create" asp-route-id="@item.ReservationId">Avaliar Estadia</a>
+                        @if (@item.Status == StatusReservation.Finalizada)
+                        {
+                            <a asp-controller="Evaluations" asp-action="Create" asp-route-id="@item.ReservationId">Avaliar Estadia</a>
+                        }
                         <a asp-controller="Items" asp-action="Create" asp-route-id="@item.ReservationId">CheckList</a>
                         <a asp-action="Details" asp-route-id="@item.ReservationId">Detalhes</a>
                         <a asp-action="Delete" asp-route-id="@item.ReservationId">Cancelar</a>
                     }
                     else if (User.IsInRole("Owner_Employeer"))
                     {
-                        <a asp-controller="ClientEvaluations" asp-action="Index" asp-route-id="@item.ApplicationUser.Id">Avaliações Cliente</a>
-                        <a asp-action="Details" asp-route-id="@item.ReservationId">Gerir Reserva</a>
+                        <a asp-action="Details" asp-route-id="@item.ReservationId">Detalhes</a>
+                        @if (@item.Status == StatusReservation.Pendente)
+                        {
+                            <a asp-controller="ClientEvaluations" asp-action="Index" asp-route-id="@item.ApplicationUser.Id">Avaliação Cliente</a>
+                            <a class="btn btn-primary" asp-action="Confirm" asp-route-id=@item.ReservationId>Confirmar</a>
+                            <a class="btn btn-primary" asp-action="Cancel" asp-route-id=@item.ReservationId>Cancelar</a>
+                        }
                     }
                     else if (User.IsInRole("Owner_Manager"))
                     {

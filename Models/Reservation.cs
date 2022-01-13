@@ -21,10 +21,11 @@ namespace Airbnb_PWEB.Models
 
         public virtual List<Item> ItemsChecked { get; set; }
 
-        public bool statusReservation { get; set; }
+        public StatusReservation Status { get; set; }   
 
         public ApplicationUser ApplicationUser { get; set; }
 
         public ClientEvaluation ClientEvaluation{ get; set; }
     }
+    public enum StatusReservation { Pendente, Cancelada, Aprovada, Entregue, Finalizada }
 }
