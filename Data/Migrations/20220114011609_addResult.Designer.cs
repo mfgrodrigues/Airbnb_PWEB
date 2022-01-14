@@ -4,14 +4,16 @@ using Airbnb_PWEB.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Airbnb_PWEB.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220114011609_addResult")]
+    partial class addResult
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -321,12 +323,6 @@ namespace Airbnb_PWEB.Data.Migrations
                     b.Property<int>("PropertyId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ResultEntryResultId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ResultExitResultId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -335,10 +331,6 @@ namespace Airbnb_PWEB.Data.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("PropertyId");
-
-                    b.HasIndex("ResultEntryResultId");
-
-                    b.HasIndex("ResultExitResultId");
 
                     b.ToTable("Reservations");
                 });
@@ -598,21 +590,9 @@ namespace Airbnb_PWEB.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Airbnb_PWEB.Models.Result", "ResultEntry")
-                        .WithMany()
-                        .HasForeignKey("ResultEntryResultId");
-
-                    b.HasOne("Airbnb_PWEB.Models.Result", "ResultExit")
-                        .WithMany()
-                        .HasForeignKey("ResultExitResultId");
-
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("Property");
-
-                    b.Navigation("ResultEntry");
-
-                    b.Navigation("ResultExit");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

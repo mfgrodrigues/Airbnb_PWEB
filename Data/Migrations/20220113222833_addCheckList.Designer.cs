@@ -4,14 +4,16 @@ using Airbnb_PWEB.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Airbnb_PWEB.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220113222833_addCheckList")]
+    partial class addCheckList
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,14 +131,9 @@ namespace Airbnb_PWEB.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ResultId")
-                        .HasColumnType("int");
-
                     b.HasKey("CheckItemId");
 
                     b.HasIndex("CheckListId");
-
-                    b.HasIndex("ResultId");
 
                     b.ToTable("CheckItems");
                 });
@@ -321,12 +318,6 @@ namespace Airbnb_PWEB.Data.Migrations
                     b.Property<int>("PropertyId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ResultEntryResultId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ResultExitResultId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -336,23 +327,7 @@ namespace Airbnb_PWEB.Data.Migrations
 
                     b.HasIndex("PropertyId");
 
-                    b.HasIndex("ResultEntryResultId");
-
-                    b.HasIndex("ResultExitResultId");
-
                     b.ToTable("Reservations");
-                });
-
-            modelBuilder.Entity("Airbnb_PWEB.Models.Result", b =>
-                {
-                    b.Property<int>("ResultId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.HasKey("ResultId");
-
-                    b.ToTable("Results");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -500,14 +475,10 @@ namespace Airbnb_PWEB.Data.Migrations
             modelBuilder.Entity("Airbnb_PWEB.Models.CheckItem", b =>
                 {
                     b.HasOne("Airbnb_PWEB.Models.CheckList", "CheckList")
-                        .WithMany()
+                        .WithMany("Itens")
                         .HasForeignKey("CheckListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Airbnb_PWEB.Models.Result", null)
-                        .WithMany("Itens")
-                        .HasForeignKey("ResultId");
 
                     b.Navigation("CheckList");
                 });
@@ -598,21 +569,9 @@ namespace Airbnb_PWEB.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Airbnb_PWEB.Models.Result", "ResultEntry")
-                        .WithMany()
-                        .HasForeignKey("ResultEntryResultId");
-
-                    b.HasOne("Airbnb_PWEB.Models.Result", "ResultExit")
-                        .WithMany()
-                        .HasForeignKey("ResultExitResultId");
-
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("Property");
-
-                    b.Navigation("ResultEntry");
-
-                    b.Navigation("ResultExit");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -671,6 +630,11 @@ namespace Airbnb_PWEB.Data.Migrations
                     b.Navigation("Properties");
                 });
 
+            modelBuilder.Entity("Airbnb_PWEB.Models.CheckList", b =>
+                {
+                    b.Navigation("Itens");
+                });
+
             modelBuilder.Entity("Airbnb_PWEB.Models.Company", b =>
                 {
                     b.Navigation("Employeers");
@@ -688,11 +652,6 @@ namespace Airbnb_PWEB.Data.Migrations
                     b.Navigation("ClientEvaluation");
 
                     b.Navigation("Evaluation");
-                });
-
-            modelBuilder.Entity("Airbnb_PWEB.Models.Result", b =>
-                {
-                    b.Navigation("Itens");
                 });
 #pragma warning restore 612, 618
         }

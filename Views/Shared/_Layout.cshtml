@@ -20,51 +20,57 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Properties" asp-action="Index">Imóveis</a>
+                        <li class="nav-link">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Properties" asp-action="Index">Alojamentos</a>
                         </li>
-                        @if (User.IsInRole("Owner_Manager"))
+                        @if (User.IsInRole("Admin"))
                         {
-                            <li class="nav-item">
+                            <li class="nav-link">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categorias</a>
                             </li>
+                            <li class="nav-link">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">Admin Roles</a>
+                            </li>
                         }
-                        <li class="nav-item">
+                        @* <li class="nav-item">
                             <form class="form-inline" asp-controller="Properties" asp-action="Search" method="get">
-                                <input type="text" class="form-control" name="text2search" placeholder="Search a Property..." />
-                                <input type="submit" value="Search" />
+                            <input type="text" class="form-control" name="text2search" placeholder="Search a Property..." />
+                            <input type="submit" value="Search" />
                             </form>
-                        </li>
+                            </li>*@
                         @if (User.IsInRole("Client"))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="Index">Minhas Reservas</a>
+                            <li class="nav-link">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="Index">As Minhas Reservas</a>
                             </li>
-                        }
-                            <li class="nav-item">
+
+                            <li class="nav-link">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Items" asp-action="Index">Items</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Evaluations" asp-action="Index">Comentários</a>
+                            <li class="nav-link">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Evaluations" asp-action="Index">Avaliações</a>
                             </li>
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">Admin Roles</a>
-                                </li>
-                            }
-                            @if (User.IsInRole("Owner_Manager"))
-                            {
-                                <div class="dropdown">
-                                    <button class="dropbtn">Funcionários</button>
+                        } 
+                       @if (User.IsInRole("Owner_Manager"))
+                       {
+                           <li class="nav-link">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categorias</a>
+                            </li>
+                            <li class="nav-link">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="CheckLists" asp-action="Index">CheckLists</a>
+                            </li>
+                            <div class="nav-link">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="ClientEvaluations" asp-action="Index">Avaliações Clientes</a>
+                            </div>
+                            <div class="dropdown">
+                                 <button class="dropbtn">Funcionários</button>
                                     <div class="dropdown-content">
                                         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Novo Funcionário</a>
                                         <a class="nav-link text-dark" asp-controller="Companies" asp-action="Index">Gerir Funcionários</a>
                                     </div>
-                                </div>
-
-                            }
-                        </ul>
+                            </div>
+                       }
+                    </ul>
                     <partial name="_LoginPartial" />
                 </div>
             </div>

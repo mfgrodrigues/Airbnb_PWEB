@@ -6,7 +6,7 @@ namespace Airbnb_PWEB.Models
 {
     public class Reservation
     {
-        public int ReservationId { get; set; } 
+        public int ReservationId { get; set; }
         [Required]
         public DateTime CheckIn { get; set; }
         [Required]
@@ -19,15 +19,18 @@ namespace Airbnb_PWEB.Models
 
         public Evaluation Evaluation { get; set; }
 
-        public virtual List<Item> ItemsChecked { get; set; }
-
-        public StatusReservation Status { get; set; }   
+        public StatusReservation Status { get; set; }
 
         public ApplicationUser ApplicationUser { get; set; }
 
-        public ClientEvaluation ClientEvaluation{ get; set; }
+        public ClientEvaluation ClientEvaluation { get; set; }
 
         public String ApprovalComment { get; set; }
+
+        public Result ResultEntry { get; set; }
+
+        public Result ResultExit { get; set; }
     }
-    public enum StatusReservation { Pendente, Cancelada, Aprovada, Entregue, Finalizada }
+
+        public enum StatusReservation { Pendente, Cancelada, Aprovada, Entregue, Finalizada }
 }

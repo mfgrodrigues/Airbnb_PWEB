@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Airbnb_PWEB.Models.CheckList>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>CheckList Categories</h1>
+
+<p>
+    
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Categoria
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Name)
+            </td>
+            <td>
+                <a asp-controller="CheckItems" asp-action="Index" asp-route-id="@item.CheckListId">Ver Itens</a> |
+                <a asp-action="Delete" asp-route-id="@item.CheckListId">Delete</a> |
+                <a asp-controller="CheckItems" asp-action="Create" asp-route-id="@item.CheckListId">Adicionar Item</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

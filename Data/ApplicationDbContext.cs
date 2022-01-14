@@ -24,10 +24,14 @@ namespace Airbnb_PWEB.Data
 
         public DbSet<Evaluation> Evaluation { get; set; }
 
-        public DbSet<Item> Items { get; set; }
-
         public DbSet<Company> Companies { get; set;}
 
         public DbSet<ClientEvaluation> ClientEvaluations { get; set; }
+
+        public DbSet<CheckItem> CheckItems { get; set; }    
+
+        public DbSet<CheckList> CheckList { get; set; } 
+
+        public DbSet<Result> Results { get; set; }
     }
 }

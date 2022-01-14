@@ -75,7 +75,7 @@
                         }
                         <a asp-controller="Items" asp-action="Create" asp-route-id="@item.ReservationId">CheckList</a>
                         <a asp-action="Details" asp-route-id="@item.ReservationId">Detalhes</a>
-                        <a asp-action="Delete" asp-route-id="@item.ReservationId">Eliminar</a>
+                        @*<a asp-action="Delete" asp-route-id="@item.ReservationId">Eliminar</a>*@
                     }
                     else if (User.IsInRole("Owner_Employeer"))
                     {
@@ -89,6 +89,10 @@
                         @if(@item.Status == StatusReservation.Cancelada)
                         {
                             <a asp-action="Edit" asp-route-id="@item.ReservationId">Adicionar Comentário</a>
+                        }
+                        @if(@item.Status == StatusReservation.Aprovada)
+                        {
+                            <a asp-controller="CheckItems" asp-action="Edit" asp-route-id="@item.ReservationId">Preencher CheckList</a>
                         }
                     }
                     else if (User.IsInRole("Owner_Manager"))

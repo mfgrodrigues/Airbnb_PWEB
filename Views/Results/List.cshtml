@@ -1,0 +1,33 @@
+﻿@model Airbnb_PWEB.Models.Result
+
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1>Resultado CheckList</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Checked
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Itens) {
+        <tr>
+         <td>
+           @Html.DisplayFor(modelItem => item.Name)
+         </td>
+         <td>
+           @Html.DisplayFor(modelItem => item.IsCheck)
+         </td>
+        </tr>
+
+}       
+    </tbody>
+</table>
