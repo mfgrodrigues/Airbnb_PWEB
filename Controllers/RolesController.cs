@@ -29,6 +29,8 @@ namespace Airbnb_PWEB.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
+            if(ViewBag.Message != null)
+                ViewBag.Message = TempData["shortMessage"].ToString();
             var selectRoles = roleManager.Roles.Where(r => !r.Name.Equals("Owner_Employeer"));
             
             return View(selectRoles.ToList());
@@ -140,7 +142,7 @@ namespace Airbnb_PWEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ApplicationUser user)
         {
-            var user2 = await context.Users.FindAsync(user.Id);
+            var userOld = await context.Users.FindAsync(user.Id);
             
             if (user.Id == null)
             {
@@ -151,11 +153,44 @@ namespace Airbnb_PWEB.Controllers
             {
                 try
                 {
-                    user2.FirstName = user.FirstName;
-                    user2.LastName = user.LastName;
-                    user2.PhoneNumber = user.PhoneNumber;
-                   
-                    context.Update(user2);
+                    userOld.FirstName = user.FirstName;
+                    userOld.LastName = user.LastName;
+                    userOld.PhoneNumber = user.PhoneNumber;
+
+                    if (user.FunctionRole.Equals("Client") && userOld.FunctionRole.Equals("Owner_Manager")){// ver se nao tem funcionarios nem imoveis dele
+                        var companyOwner = context.Companies.Include(p=> p.Employeers).Where(p => p.Owner == userOld).FirstOrDefault();
+                        var property = context.Properties.Include(p=>p.Company).Where(p => p.Company == companyOwner).FirstOrDefault();
+
+                        if(companyOwner.Employeers==null || property == null)
+                        {
+                            userOld.FunctionRole = user.FunctionRole;
+                            await userManager.RemoveFromRoleAsync(userOld, "Owner_Manager");
+                            await userManager.AddToRoleAsync(userOld, "Client");
+                        }
+                        else
+                        {
+                            TempData["shortMessage"] = "O Gestor apresenta propriedades ou funcionarios associados à sua empresa";  
+                            return RedirectToAction(nameof(Index));
+                            //ModelState.AddModelError("Function Role", "O Gestor apresenta propriedades ou funcionarios associados à sua empresa");
+                            //return View();
+                        }
+
+                    }
+                    else if(user.FunctionRole.Equals("Owner_Manager") && userOld.FunctionRole.Equals("Client"))
+                    {
+                        userOld.FunctionRole = user.FunctionRole;
+                        await userManager.RemoveFromRoleAsync(userOld, "Client");
+                        await userManager.AddToRoleAsync(userOld, "Owner_Manager");
+                        Company company = new Company()
+                        {
+                            Owner = userOld,
+                            Employeers = new List<ApplicationUser>()
+                        };
+                        context.Add(company);
+                        await context.SaveChangesAsync();
+                    }
+
+                    context.Update(userOld);
                     await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

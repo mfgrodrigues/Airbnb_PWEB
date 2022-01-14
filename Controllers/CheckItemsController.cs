@@ -69,7 +69,7 @@ namespace Airbnb_PWEB.Controllers
             if (ModelState.IsValid)
             {
                 checkItem.CheckListId = id;
-                checkItem.IsCheck = false;
+                //checkItem.IsCheck = false;
                 _context.Add(checkItem);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index), "CheckLists");
@@ -123,26 +123,31 @@ namespace Airbnb_PWEB.Controllers
             {
                 return NotFound();
             }
+            var checkItemsList = new List<CheckItem>();
+            foreach (var item in checkValues)
+            {
+                checkItemsList.Add( _context.CheckItems.Where(c => c.CheckItemId == item).FirstOrDefault());
+            }
             // procurar na base de dados o primeiro item selecionado
-            var checkItem = _context.CheckItems.Include(c => c.CheckList).Where(c => c.CheckItemId == checkValues[0]).FirstOrDefault();
+            //var checkItem = _context.CheckItems.Include(c => c.CheckList).Where(c => c.CheckItemId == checkValues[0]).FirstOrDefault();
 
             // verificar a que checklist pertence
-            var checkList = _context.CheckList.Where(c => c.CheckListId == checkItem.CheckListId).FirstOrDefault();
+            //var checkList = _context.CheckList.Where(c => c.CheckListId == checkItem.CheckListId).FirstOrDefault();
 
-            if (checkList == null)
-                return NotFound();
+            //if (checkList == null)
+            //    return NotFound();
 
             // lista do items da checklist encontrada
-            var checkItemsList = _context.CheckItems.Where(c => c.CheckListId == checkList.CheckListId).ToList(); 
+            //var checkItemsList = _context.CheckItems.Where(c => c.CheckListId == checkList.CheckListId).ToList(); 
 
             // colocar a true os items selecionados
-            foreach(var item in checkItemsList){
-                foreach(var itemChecked in checkValues)
-                {
-                    if(item.CheckItemId == itemChecked)
-                        item.IsCheck = true;
-                }
-            }
+            //foreach(var item in checkItemsList){
+            //    foreach(var itemChecked in checkValues)
+            //    {
+            //        if(item.CheckItemId == itemChecked)
+            //            item.IsCheck = true;
+            //    }
+            //}
 
             Result results = new Result()
             {
@@ -151,24 +156,15 @@ namespace Airbnb_PWEB.Controllers
 
             foreach (var item in checkItemsList)
             {
-                results.Itens.Add(
-                    new CheckItem() { 
-                        Name = item.Name,
-                        IsCheck = item.IsCheck, 
-                });
+                results.Itens.Add(item);
             }
+            _context.Update(results);
 
             var reservation = _context.Reservations.Include(r => r.ResultEntry).Where(r => r.ReservationId == saveReservationId).FirstOrDefault();
             reservation.ResultEntry = results;
 
-            _context.Update(results);
+           
             _context.Update(reservation);
-
-            foreach (var item in checkItemsList)
-            {
-                item.IsCheck = false;
-                _context.Update(item);
-            }
 
             _context.SaveChanges();
 

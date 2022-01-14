@@ -30,21 +30,32 @@ namespace Airbnb_PWEB.Controllers
         // GET: Reservations
         public async Task<IActionResult> Index(int? id) 
         {
+            var currentUser = await _userManager.GetUserAsync(User);
             if (id == null)     // index para clientes
             {
-                var currentUser2 = await _userManager.GetUserAsync(User);
-                if (currentUser2 == null)
-                    return NotFound();
+                if (User.IsInRole("Client")) { 
+                    if (currentUser == null)
+                        return NotFound();
 
-                var reservationList2 = await _context.Reservations.Include(r => r.Property).Where(r => r.ApplicationUser == currentUser2).ToListAsync();
+                    var reservationList2 = await _context.Reservations.Include(r => r.Property).Where(r => r.ApplicationUser == currentUser).ToListAsync();
 
-                if (reservationList2 == null)
-                    return NotFound();
+                    if (reservationList2 == null)
+                        return NotFound();
 
-                return View(reservationList2);
+                    return View(reservationList2);
+                }
+                else if(User.IsInRole("Owner_Employeer")){
+                    var mycompany = _context.Companies.Where(c => c.Employeers.Contains(currentUser)).FirstOrDefault();
+                    if (mycompany == null)
+                        return NotFound();
+                    var resultList = _context.Reservations.Include(r=> r.ApplicationUser).Include(r => r.Property).Where(r => r.Property.Company == mycompany).ToList();
+                    if (resultList == null)
+                        return NotFound();
+
+                    return View(resultList);
+                }
             }
-            // index para funcionarios e gestor
-            var currentUser = await _userManager.GetUserAsync(User);
+            // index para funcionarios e gestor quando tem uma propriedade associada
 
             var reservationList = await _context.Reservations.Include(r => r.ApplicationUser).Where(r => r.PropertyId == id).ToListAsync();
 

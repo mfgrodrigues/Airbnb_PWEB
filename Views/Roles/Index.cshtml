@@ -2,6 +2,15 @@
 
 <h1>Lista de Roles</h1>
 
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.Message");
+            };
+    </script>
+}
+
 <br />
 <table class="table table-bordered table-hover" id="mytable">
 
@@ -29,8 +38,9 @@
 </table>
 @section Scripts{
     <script>
-    $(document).ready(function () {
-        $('#mytable').DataTable();
-    });
+        $(document).ready(function () {
+            $('#mytable').DataTable();
+        });
     </script>
 }
+
