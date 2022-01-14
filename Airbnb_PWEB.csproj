@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="EmailService\**" />
+    <Content Remove="EmailService\**" />
+    <EmbeddedResource Remove="EmailService\**" />
+    <None Remove="EmailService\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\resources\delete.svg" />
     <None Include="wwwroot\resources\edit.svg" />
     <None Include="wwwroot\resources\details.svg" />
@@ -24,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EmailService\EmailService.csproj" />
+    <ProjectReference Include="EmailService\EmailService.csproj" />
   </ItemGroup>
 
   <ItemGroup>
