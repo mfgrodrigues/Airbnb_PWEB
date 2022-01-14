@@ -23,6 +23,12 @@
                         <li class="nav-link">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Properties" asp-action="Index">Alojamentos</a>
                         </li>
+                        @if (User.IsInRole("Owner_Employeer"))
+                        {
+                            <li class="nav-link">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="Index">Reservas</a>
+                            </li>
+                        }
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-link">

@@ -60,7 +60,19 @@
             <dd class = "col-sm-10">
                 @Html.DisplayFor(model => model.ApprovalComment)
             </dd>
+        }
+        else if (User.IsInRole("Owner_Employeer"))
+        {
+            <dt class = "col-sm-2">
+                Iens Selecionados CheckIn
+            </dt>
+            foreach(var item in @Model.ResultEntry.Itens)
+            {
+               <dd class = "col-sm-10">
+               @Html.DisplayFor(modelItem => item.Name);
+               </dd>
             }
+        }
     </dl>
 </div>
 <div>

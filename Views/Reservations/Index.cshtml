@@ -55,15 +55,15 @@
                 <td>
                     @if (item.Status == StatusReservation.Aprovada)
                     {
-                        <span class=" btn btn-success ">Aprovada</span>
+                        <span class="btn btn-success ">Aprovada</span>
                     }
                     else if (item.Status == StatusReservation.Cancelada)
                     {
-                        <span class=" btn btn-danger">Cancelada</span>
+                        <span class="btn btn-danger">Cancelada</span>
                     }
                     else if (item.Status == StatusReservation.Entregue)
                     {
-                        <span class=" btn btn-danger">Entregue</span>
+                        <span class="btn btn-secondary">Entregue</span>
                     }
                     else
                     {
@@ -96,7 +96,18 @@
                         }
                         @if(@item.Status == StatusReservation.Aprovada)
                         {
-                            <a asp-controller="CheckItems" asp-action="Edit" asp-route-id="@item.ReservationId">Preencher CheckList</a>
+                            @if (@item.ResultEntry == null)
+                            {
+                                <a asp-controller="CheckItems" asp-action="Edit" asp-route-id="@item.ReservationId">Preencher CheckList CheckIn</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-primary" asp-action="CheckedIn" asp-route-id=@item.ReservationId>Entregar</a>
+                            }
+                        }
+                        @if(@item.Status == StatusReservation.Entregue)
+                        {
+                            <a asp-controller="CheckItems" asp-action="Edit" asp-route-id="@item.ReservationId">Preencher CheckList CheckOut</a>
                         }
                     }
                     else if (User.IsInRole("Owner_Manager"))

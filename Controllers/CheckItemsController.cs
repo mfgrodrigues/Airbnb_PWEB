@@ -165,10 +165,9 @@ namespace Airbnb_PWEB.Controllers
 
            
             _context.Update(reservation);
-
             _context.SaveChanges();
 
-            return RedirectToAction("List", "Results", new { id = reservation.ResultEntry.ResultId });
+            return RedirectToAction("Index", "Reservations", new { id = reservation.PropertyId});
         }
 
         // GET: CheckItems/Delete/5
