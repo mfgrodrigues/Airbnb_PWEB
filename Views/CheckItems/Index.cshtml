@@ -7,7 +7,7 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create New Item</a>
 </p>
 <table class="table" id="mytable">
     <thead>
@@ -16,7 +16,7 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                Opções
+                Options
             </th>
         </tr>
     </thead>
@@ -36,7 +36,7 @@
     </tbody>
 </table>
 
-<a asp-controller="CheckLists"asp-action="Index">Voltar atrás</a>
+<a asp-controller="CheckLists"asp-action="Index">Back to List</a>
 
 @section Scripts{
     <script>

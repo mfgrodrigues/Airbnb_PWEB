@@ -106,7 +106,7 @@
                         {
                             @if (@item.ResultEntry == null)
                             {
-                                <a asp-controller="CheckItems" asp-action="Edit" asp-route-id="@item.ReservationId">Preencher CheckList CheckIn</a>
+                                <a asp-controller="CheckItems" asp-action="CheckEdit" asp-route-id="@item.ReservationId">Preencher CheckList CheckIn</a>
                             }
                             else
                             {
@@ -117,7 +117,7 @@
                         {
                             if (item.ResultExit == null)
                             {
-                                <a asp-controller="CheckItems" asp-action="Edit" asp-route-id="@item.ReservationId">Preencher CheckList CheckOut</a>
+                                <a asp-controller="CheckItems" asp-action="CheckEdit" asp-route-id="@item.ReservationId">Preencher CheckList CheckOut</a>
                             }
                             else
                             {

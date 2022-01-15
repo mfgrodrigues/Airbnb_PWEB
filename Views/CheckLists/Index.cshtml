@@ -6,17 +6,15 @@
 
 <h1>CheckList Categories</h1>
 
-<p>
-
-</p>
+<p></p>
 <table class="table" id="mytable">
     <thead>
         <tr>
             <th>
-                Categoria
+                Category
             </th>
             <th>
-                Opções
+                Options
             </th>
         </tr>
     </thead>
@@ -28,9 +26,9 @@
                     @Html.DisplayFor(modelItem => item.Category.Name)
                 </td>
                 <td>
-                    <a asp-controller="CheckItems" asp-action="Index" asp-route-id="@item.CheckListId">Ver Itens</a> |
+                    <a asp-controller="CheckItems" asp-action="Index" asp-route-id="@item.CheckListId">See Items</a> |
                     <a asp-action="Delete" asp-route-id="@item.CheckListId">Delete</a> |
-                    <a asp-controller="CheckItems" asp-action="Create" asp-route-id="@item.CheckListId">Adicionar Item</a>
+                    <a asp-controller="CheckItems" asp-action="Create" asp-route-id="@item.CheckListId">Add Item</a>
                 </td>
             </tr>
         }

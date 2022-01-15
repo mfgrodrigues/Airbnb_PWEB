@@ -35,6 +35,7 @@
                         <a asp-action="Edit" asp-route-id="@item.CategoryId">Edit</a>
                         <a asp-action="Delete" asp-route-id="@item.CategoryId">Delete</a>
                     }
+                    
                     @if (User.IsInRole("Owner_Manager"))
                     {
                         <a class="btn btn-primary" asp-controller="CheckLists" asp-action="Create" asp-route-id=@item.CategoryId>New CheckList</a>

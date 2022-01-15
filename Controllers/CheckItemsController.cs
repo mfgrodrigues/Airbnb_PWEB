@@ -79,7 +79,7 @@ namespace Airbnb_PWEB.Controllers
         }
 
         // GET: CheckItems/Edit/5
-        public async Task<IActionResult> Edit(int id) // recebemos o id da reserva
+        public async Task<IActionResult> CheckEdit(int id) // recebemos o id da reserva
         {
             if (id <= 0)
             {
@@ -117,7 +117,7 @@ namespace Airbnb_PWEB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(List<int> checkValues)
+        public async Task<IActionResult> CheckEdit(List<int> checkValues)
         {
             if (checkValues.Count() == 0)
             {
@@ -152,6 +152,56 @@ namespace Airbnb_PWEB.Controllers
 
             return RedirectToAction("Index", "Reservations", new { id = reservation.PropertyId});
         }
+
+        public async Task<IActionResult> Edit(int ? id)
+        {
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var item = await _context.CheckItems.FindAsync(id);
+                if (item == null)
+                {
+                    return NotFound();
+                }
+                return View(item);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id,CheckItem item)
+        {
+            var item2 = _context.CheckItems.Where(c => c.CheckItemId == id).FirstOrDefault();
+            if (id != item.CheckItemId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    item2.Name = item.Name;
+                    _context.Update(item2);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CheckItemExists(item.CheckItemId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index),"CheckLists");
+            }
+            return View(item);
+        }
+
 
         // GET: CheckItems/Delete/5
         public async Task<IActionResult> Delete(int? id)
