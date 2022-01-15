@@ -6,99 +6,128 @@
 
 <h1>Details</h1>
 
+
 <div>
     <h4>Reservation</h4>
-    <hr /> 
-<dl class="row">
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Property.Tittle)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Property.Tittle)
-    </dd>
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Property.Description)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Property.Description)
-    </dd>
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Property.pricePerNigth)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Property.pricePerNigth)
-    </dd>
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Property.City)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Property.City)
-    </dd>
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.CheckIn)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.CheckIn)
-    </dd>
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.CheckOut)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.CheckOut)
-    </dd>
-
-    @if (@Model.ApprovalComment != null)
-    {
+    <hr />
+    <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ApprovalComment)
+            @Html.DisplayNameFor(model => model.Property.Tittle)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ApprovalComment)
+            @Html.DisplayFor(model => model.Property.Tittle)
         </dd>
-    }
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Property.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Property.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Property.pricePerNigth)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Property.pricePerNigth)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Property.City)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Property.City)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CheckIn)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CheckIn)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CheckOut)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CheckOut)
+        </dd>
+    </dl>
+        @if (@Model.ApprovalComment != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ApprovalComment)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ApprovalComment)
+            </dd>
+        }
 
-    @if(User.IsInRole("Owner_Manager") || User.IsInRole("Owner_Employeer")) 
-    { 
-
-            @if (Model.ResultEntry != null)
-            {
-                <dt class="col-sm-2">
-                    Itens Selecionados CheckIn
-                </dt>
-                foreach (var item in @Model.ResultEntry.Itens)
-                {
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(modelItem => item.Name);
-                    </dd>
-                }
-            }
-            @if (Model.ResultExit != null)
-            {
-                <dt class="col-sm-2">
-                    Itens Selecionados CheckOut
-                </dt>
-                foreach (var item in @Model.ResultExit.Itens)
-                {
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(modelItem => item.Name);
-                    </dd>
-                }
-            }
-
-            @if (Model.ImagesReservation != null)
-            {
-
-                @foreach (var image in Model.ImagesReservation)
-                {
+        @if (User.IsInRole("Owner_Manager") || User.IsInRole("Owner_Employeer"))
+        {
+            <br />
+            <h4>Checkin Items</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.ResultEntry != null)
                     {
-                        <img class="img-thumbnail" src="data:@image.FileType;base64,@Convert.ToBase64String(image.Data, 0, image.Data.Length)" style="width:250px;height:200px;" />
+                        @foreach (var item in @Model.ResultEntry.Itens)
+                        {
+                        <thead>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                            </tr>
+                        </thead>
+                    }
+                    }
+                    </tbody>
+                </table>
+                <br />
+                <h4>Checkout Items</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Name
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.ResultExit != null)
+                        {
+                            @foreach (var item in @Model.ResultExit.Itens)
+                            {
+                            <thead>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                </tr>
+                            </thead>
+                        }
+                        }
+                    </tbody>
+
+                    </table>
+                    <br />
+
+                    @if (Model.ImagesReservation != null)
+                    {
+                        <h4>Report Damage</h4>
+                        @foreach (var image in Model.ImagesReservation)
+                        {
+                            {
+                                <img class="img-thumbnail" src="data:@image.FileType;base64,@Convert.ToBase64String(image.Data, 0, image.Data.Length)" style="width:250px;height:200px;" />
+                            }
+                        }
                     }
                 }
-            }
-    }
-</dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ReservationId">Edit</a> |
+    <br />
     <a asp-action="Index" asp-route-id="@Model.PropertyId">Back to List</a>
 </div>
