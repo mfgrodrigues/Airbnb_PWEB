@@ -12,13 +12,13 @@
             @if (User.IsInRole("Client"))
             {
                 <th>
-                    Propriedade
+                    Property
                 </th>
             }
             else
             {
                 <th>
-                    Cliente
+                    Client
                 </th>
             }
             <th>
@@ -27,7 +27,9 @@
             <th>
                 Check-Out
             </th>
-            <th></th>
+            <th>
+                Status
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -53,48 +55,51 @@
                     @Html.DisplayFor(modelItem => item.CheckOut)
                 </td>
                 <td>
-                    @if (item.Status == StatusReservation.Aprovada)
+                    @if (item.Status == StatusReservation.Approved)
                     {
-                        <span class="btn btn-success ">Aprovada</span>
+                        <span class="btn btn-success ">Approved</span>
                     }
-                    else if (item.Status == StatusReservation.Cancelada)
+                    else if (item.Status == StatusReservation.Canceled)
                     {
-                        <span class="btn btn-danger">Cancelada</span>
+                        <span class="btn btn-danger">Canceled</span>
                     }
-                    else if (item.Status == StatusReservation.Entregue)
+                    else if (item.Status == StatusReservation.Checkin)
                     {
-                        <span class="btn btn-secondary">Entregue</span>
+                        <span class="btn btn-secondary">Checkin</span>
+                    }
+                    else if (item.Status == StatusReservation.Checkout)
+                    {
+                        <span class="btn btn-success">Checkout</span>
                     }
                     else
                     {
-                        <span class=" btn btn-warning">Pendente</span>
+                        <span class=" btn btn-warning">Pending</span>
                     }
                 </td>
                 <td>
                     @if (User.IsInRole("Client"))
                     {
-                        @if (@item.Status == StatusReservation.Finalizada)
+                        @if (@item.Status == StatusReservation.Checkout)
                         {
                             <a asp-controller="Evaluations" asp-action="Create" asp-route-id="@item.ReservationId">Avaliar Estadia</a>
                         }
                         <a asp-controller="Items" asp-action="Create" asp-route-id="@item.ReservationId">CheckList</a>
                         <a asp-action="Details" asp-route-id="@item.ReservationId">Detalhes</a>
-                        @*<a asp-action="Delete" asp-route-id="@item.ReservationId">Eliminar</a>*@
                     }
                     else if (User.IsInRole("Owner_Employeer"))
                     {
                         <a asp-action="Details" asp-route-id="@item.ReservationId">Detalhes</a>
-                        @if (@item.Status == StatusReservation.Pendente)
+                        @if (@item.Status == StatusReservation.Pending)
                         {
                             <a asp-controller="ClientEvaluations" asp-action="Index" asp-route-id="@item.ApplicationUser.Id">Avaliação Cliente</a>
                             <a class="btn btn-primary" asp-action="Confirm" asp-route-id=@item.ReservationId>Confirmar</a>
                             <a class="btn btn-primary" asp-action="Cancel" asp-route-id=@item.ReservationId>Cancelar</a>
                         }
-                        @if(@item.Status == StatusReservation.Cancelada)
+                        @if (@item.Status == StatusReservation.Canceled)
                         {
                             <a asp-action="Edit" asp-route-id="@item.ReservationId">Adicionar Comentário</a>
                         }
-                        @if(@item.Status == StatusReservation.Aprovada)
+                        @if (@item.Status == StatusReservation.Approved)
                         {
                             @if (@item.ResultEntry == null)
                             {
@@ -105,9 +110,25 @@
                                 <a class="btn btn-primary" asp-action="CheckedIn" asp-route-id=@item.ReservationId>Entregar</a>
                             }
                         }
-                        @if(@item.Status == StatusReservation.Entregue)
+                        @if (@item.Status == StatusReservation.Checkin)
                         {
-                            <a asp-controller="CheckItems" asp-action="Edit" asp-route-id="@item.ReservationId">Preencher CheckList CheckOut</a>
+                            if (item.ResultExit == null)
+                            {
+                                <a asp-controller="CheckItems" asp-action="Edit" asp-route-id="@item.ReservationId">Preencher CheckList CheckOut</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-primary" asp-action="CheckedOut" asp-route-id=@item.ReservationId>Checkout</a>
+                                <form asp-action="AddPhotos" asp-route-id="@item.ReservationId" method="post" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <input type="file" name="files" multiple required />
+                                        <span asp-validation-for="@item.ImagesReservation" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="submit" value="Save" class="btn btn-primary" />
+                                    </div>
+                                </form>
+                            }
                         }
                     }
                     else if (User.IsInRole("Owner_Manager"))

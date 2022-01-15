@@ -30,12 +30,12 @@ namespace Airbnb_PWEB.Controllers
             if (id == null)
             {
                 
-                var applicationDbContext = _context.ClientEvaluations.Include(c => c.Company).Include(c => c.Reservation).Where(c => c.Company.Owner == user);
+                var applicationDbContext = _context.ClientEvaluations.Include(c => c.Reservation.ApplicationUser).Include(c => c.Company).Include(c => c.Reservation).Where(c => c.Company.Owner == user);
                 return View(await applicationDbContext.ToListAsync());
             }
-            // vista do Funcionário da Emrpresa
+            // vista do Funcionário da Empresa
             var myCompany = _context.Companies.Where(c => c.Employeers.Contains(user)).FirstOrDefault();
-            var evaluationlist = _context.ClientEvaluations.Include(c => c.Company).Where(e => e.Reservation.ApplicationUser.Id == id && e.Company == myCompany);
+            var evaluationlist = _context.ClientEvaluations.Include(c=>c.Reservation.ApplicationUser).Include(c => c.Company).Where(e => e.Reservation.ApplicationUser.Id == id && e.Company == myCompany);
             return View(await evaluationlist.ToListAsync());
         }
 

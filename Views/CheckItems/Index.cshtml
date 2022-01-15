@@ -9,32 +9,39 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table" id="mytable">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @*@Html.DisplayNameFor(model => model.IsCheck)*@
+                Opções
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @*@Html.DisplayFor(modelItem => item.IsCheck)*@
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CheckItemId">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.CheckItemId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CheckItemId">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.CheckItemId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<a asp-controller="CheckLists"asp-action="Index">Voltar atrás</a>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#mytable').DataTable();
+        });
+    </script>
+}

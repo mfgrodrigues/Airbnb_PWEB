@@ -10,6 +10,8 @@ using Airbnb_PWEB.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace Airbnb_PWEB.Controllers
 {
@@ -48,7 +50,11 @@ namespace Airbnb_PWEB.Controllers
                     var mycompany = _context.Companies.Where(c => c.Employeers.Contains(currentUser)).FirstOrDefault();
                     if (mycompany == null)
                         return NotFound();
-                    var resultList = _context.Reservations.Include(r => r.ResultEntry.Itens).Include(r=> r.ApplicationUser).Include(r => r.Property).Where(r => r.Property.Company == mycompany).ToList();
+                    var resultList = _context.Reservations.Include(r => r.ResultExit.Itens)
+                                                           .Include(r => r.ResultEntry.Itens).
+                                                           Include(r=> r.ApplicationUser).
+                                                           Include(r => r.Property).
+                                                           Where(r => r.Property.Company == mycompany).ToList();
                     if (resultList == null)
                         return NotFound();
 
@@ -57,7 +63,7 @@ namespace Airbnb_PWEB.Controllers
             }
             // index para funcionarios e gestor quando tem uma propriedade associada
 
-            var reservationList = await _context.Reservations.Include(r => r.ResultEntry).Include(r => r.ApplicationUser).Include(r => r.Property).Where(r => r.PropertyId == id).ToListAsync();
+            var reservationList = await _context.Reservations.Include(r => r.ResultExit).Include(r => r.ResultEntry).Include(r => r.ApplicationUser).Include(r => r.Property).Where(r => r.PropertyId == id).ToListAsync();
 
             if (reservationList == null)
                 return NotFound();
@@ -72,7 +78,7 @@ namespace Airbnb_PWEB.Controllers
                 return NotFound();
             }
             var reservation = await _context.Reservations.FindAsync(id);
-            reservation.Status = StatusReservation.Aprovada;
+            reservation.Status = StatusReservation.Approved;
             if (ModelState.IsValid)
             {
                 _context.Update(reservation);
@@ -89,7 +95,7 @@ namespace Airbnb_PWEB.Controllers
                 return NotFound();
             }
             var reservation = await _context.Reservations.FindAsync(id);
-            reservation.Status = StatusReservation.Cancelada;
+            reservation.Status = StatusReservation.Canceled;
             if (ModelState.IsValid)
             {
                 _context.Update(reservation);
@@ -106,7 +112,7 @@ namespace Airbnb_PWEB.Controllers
                 return NotFound();
             }
             var reservation = await _context.Reservations.FindAsync(id);
-            reservation.Status = StatusReservation.Entregue;
+            reservation.Status = StatusReservation.Checkin;
             if (ModelState.IsValid)
             {
                 _context.Update(reservation);
@@ -116,6 +122,61 @@ namespace Airbnb_PWEB.Controllers
             return RedirectToAction(nameof(Index), new { id = reservation.PropertyId });
         }
 
+
+        public async Task<IActionResult> CheckedOut(int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+            var reservation = await _context.Reservations.FindAsync(id);
+            reservation.Status = StatusReservation.Checkout;
+            if (ModelState.IsValid)
+            {
+                _context.Update(reservation);
+                await _context.SaveChangesAsync();
+
+            }
+            return RedirectToAction(nameof(Index), new { id = reservation.PropertyId });
+        }
+
+        public async Task<IActionResult> AddPhotos(int id, List<IFormFile> files)
+        {
+            var reservation = _context.Reservations.Include(r=> r.ApplicationUser)
+                                                    .Include(r=> r.Property)
+                                                    .Where(r => r.ReservationId == id).FirstOrDefault();
+            
+            reservation.ImagesReservation = new List<ReservationImage>();
+            foreach (var file in files)
+            {
+                var fileName = Path.GetFileNameWithoutExtension(file.FileName);
+                var extension = Path.GetExtension(file.FileName);
+                var image = new ReservationImage
+                {
+                    CreatedOn = DateTime.UtcNow,
+                    FileType = file.ContentType,
+                    Extension = extension,
+                    Name = fileName,
+                    ReservationId = reservation.ReservationId
+                };
+                using (var dataStream = new MemoryStream())
+                {
+                    await file.CopyToAsync(dataStream);
+                    image.Data = dataStream.ToArray();
+                }
+
+                reservation.ImagesReservation.Add(image);
+
+            }
+
+            reservation.Status = StatusReservation.Checkout;
+            _context.Update(reservation);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index), new { id = reservation.PropertyId });
+        }
+
+
+
         // GET: Reservations/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -124,7 +185,11 @@ namespace Airbnb_PWEB.Controllers
                 return NotFound();
             }
 
-            var reservation = await _context.Reservations.Include(p => p.ResultEntry.Itens).Include(p => p.Property).FirstOrDefaultAsync(m => m.ReservationId == id);
+            var reservation = await _context.Reservations.Include(p=> p.ImagesReservation)
+                                                         .Include(p => p.ResultExit.Itens)
+                                                         .Include(p => p.ResultEntry.Itens)
+                                                         .Include(p => p.Property)
+                                                         .FirstOrDefaultAsync(m => m.ReservationId == id);
 
             //var property = await _context.Properties.FirstOrDefaultAsync(p => p.Id == reservation.PropertyId);
 
@@ -151,7 +216,7 @@ namespace Airbnb_PWEB.Controllers
         [Authorize(Roles = "Client")]
         public async Task<IActionResult> Create([Bind("ReservationId,CheckIn,CheckOut,PropertyId,ApplicationUser,Status")] Reservation reservation, int id)
         {
-            reservation.Status = StatusReservation.Pendente;
+            reservation.Status = StatusReservation.Pending;
             reservation.PropertyId = id;
 
             reservation.ApplicationUser = await _userManager.GetUserAsync(User);

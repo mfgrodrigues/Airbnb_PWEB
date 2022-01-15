@@ -4,33 +4,35 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Alojamentos</h1>
+<h1>Properties</h1>
 
 <p>
     @if (User.IsInRole("Owner_Manager"))
     {
-        <a asp-action="Create">Adicionar Novo Alojamento</a>
+        <a asp-action="Create">Add Property</a>
     }
 </p>
 <table class="table" id="mytable">
     <thead>
         <tr>
             <th>
-                Imóvel
+                Property
             </th>
             <th>
-                Categoria
+                Category
             </th>
             <th>
-                Título
+                Tittle
             </th>
             <th>
-                Preço/Noite
+                Price/Night
             </th>
             <th>
-                Localização
+                City
             </th>
-            <th></th>
+            <th>
+                Options
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -48,7 +50,7 @@
                     @Html.DisplayFor(modelItem => item.Tittle)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.pricePerNigth)
+                    @Html.DisplayFor(modelItem => item.pricePerNigth) €
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.City)
@@ -63,9 +65,10 @@
                     {
                         <a asp-action="Delete" asp-route-id="@item.Id"><img src="resources/delete.svg" width="30%" alt="Remover" /></a>
                     }
+                    <p></p> 
                     @if (User.IsInRole("Owner_Employeer") || User.IsInRole("Owner_Manager") )
                     {
-                        <a class="btn btn-primary" asp-controller="Reservations" asp-action="Index" asp-route-id="@item.Id"> Reservas</a>
+                        <a class="btn btn-primary" asp-controller="Reservations" asp-action="Index" asp-route-id="@item.Id"> Reservations</a>
 
                     }
                 </td>

@@ -25,12 +25,15 @@ namespace Airbnb_PWEB.Models
 
         public ClientEvaluation ClientEvaluation { get; set; }
 
+        [DataType(DataType.MultilineText)]
         public String ApprovalComment { get; set; }
 
         public Result ResultEntry { get; set; }
 
         public Result ResultExit { get; set; }
+
+        public List<ReservationImage> ImagesReservation { get; set; }
     }
 
-        public enum StatusReservation { Pendente, Cancelada, Aprovada, Entregue, Finalizada }
+        public enum StatusReservation { Pending, Canceled, Approved, Checkin, Checkout }
 }

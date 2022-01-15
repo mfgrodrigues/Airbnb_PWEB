@@ -6,34 +6,45 @@
 
 <h1>Avaliações de Clientes</h1>
 
-<table class="table">
+<table class="table" id="mytable">
     <thead>
         <tr>
+            <th>
+                Cliente
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Comment)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Reservation)
+                Opções
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Comment)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Reservation.ReservationId)
-            </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Reservation.ApplicationUser.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comment)
+                </td>
                 @if (User.IsInRole("Owner_Manager"))
                 {
                     <td>
-                    <a asp-action="Edit" asp-route-id="@item.ClientEvaluationId">Editar</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ClientEvaluationId">Eliminar</a>
+                        <a asp-action="Edit" asp-route-id="@item.ClientEvaluationId">Editar</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ClientEvaluationId">Eliminar</a>
                     </td>
                 }
-        </tr>
-}
+            </tr>
+        }
     </tbody>
+</table>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#mytable').DataTable();
+        });
+    </script>
+}

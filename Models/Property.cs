@@ -7,28 +7,35 @@ namespace Airbnb_PWEB.Models
     {
         public int Id { get; set; }
         [Required]
-        [Display(Name = "Título")]
+        [Display(Name = "Tittle")]
+        [StringLength(50, MinimumLength = 8, ErrorMessage = "Minimum 8 characters, maximum 50")]
         public string Tittle { get; set; }
-        [Display(Name = "Descrição")]
+        [Display(Name = "Description")]
+        [DataType(DataType.MultilineText)]
         public string Description { get; set; }
-        [Display(Name = "Preço/Noite")]
+        [Display(Name = "Price/Night")]
         [Required]
         [Range(0,double.MaxValue,ErrorMessage ="Please enter positive or null value")]
         public double pricePerNigth { get; set; }
-        [Display(Name = "Morada")]
+        [Display(Name = "Address")]
+        [StringLength(100, MinimumLength = 8, ErrorMessage = "Minimum 8 characters, maximum 100")]
         [Required]
         public string Address { get; set; }
-        [Display(Name = "Cidade")]
+        [Display(Name = "City")]
+        [StringLength(50, ErrorMessage = "Maximum 50")]
         public string City { get; set; }
-        [Display(Name = "Comodidades")]
+        [Display(Name = "Amenities")]
+        [StringLength(100, ErrorMessage = "Maximum 100")]
+        [DataType(DataType.MultilineText)]
         public string Amenities { get; set; }
-        [Display(Name = "Imagens")]
+        [Display(Name = "Images")]
 
         [Required]
         public List<PropertyImage> Images { get; set; }
 
         public List<Reservation> Reservations { get; set; }
 
+        [Display(Name = "Category")]
         public int CategoryId { get; set; }
 
         public Category Category { get; set; }

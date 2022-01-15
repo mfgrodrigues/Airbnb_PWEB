@@ -7,28 +7,42 @@
 <h1>CheckList Categories</h1>
 
 <p>
-    
+
 </p>
-<table class="table">
+<table class="table" id="mytable">
     <thead>
         <tr>
             <th>
                 Categoria
             </th>
+            <th>
+                Opções
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Name)
-            </td>
-            <td>
-                <a asp-controller="CheckItems" asp-action="Index" asp-route-id="@item.CheckListId">Ver Itens</a> |
-                <a asp-action="Delete" asp-route-id="@item.CheckListId">Delete</a> |
-                <a asp-controller="CheckItems" asp-action="Create" asp-route-id="@item.CheckListId">Adicionar Item</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+                <td>
+                    <a asp-controller="CheckItems" asp-action="Index" asp-route-id="@item.CheckListId">Ver Itens</a> |
+                    <a asp-action="Delete" asp-route-id="@item.CheckListId">Delete</a> |
+                    <a asp-controller="CheckItems" asp-action="Create" asp-route-id="@item.CheckListId">Adicionar Item</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#mytable').DataTable();
+        });
+    </script>
+}

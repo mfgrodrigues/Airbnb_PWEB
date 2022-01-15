@@ -4,14 +4,16 @@ using Airbnb_PWEB.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Airbnb_PWEB.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220115000431_imagesReservation")]
+    partial class imagesReservation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -289,9 +291,14 @@ namespace Airbnb_PWEB.Data.Migrations
                     b.Property<int>("PropertyId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ReservationId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PropertyId");
+
+                    b.HasIndex("ReservationId");
 
                     b.ToTable("PropertyImages");
                 });
@@ -338,38 +345,6 @@ namespace Airbnb_PWEB.Data.Migrations
                     b.HasIndex("ResultExitResultId");
 
                     b.ToTable("Reservations");
-                });
-
-            modelBuilder.Entity("Airbnb_PWEB.Models.ReservationImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime?>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<byte[]>("Data")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("Extension")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FileType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ReservationId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReservationId");
-
-                    b.ToTable("ReservationImage");
                 });
 
             modelBuilder.Entity("Airbnb_PWEB.Models.Result", b =>
@@ -612,6 +587,10 @@ namespace Airbnb_PWEB.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Airbnb_PWEB.Models.Reservation", null)
+                        .WithMany("ImagesReservation")
+                        .HasForeignKey("ReservationId");
+
                     b.Navigation("Property");
                 });
 
@@ -642,17 +621,6 @@ namespace Airbnb_PWEB.Data.Migrations
                     b.Navigation("ResultEntry");
 
                     b.Navigation("ResultExit");
-                });
-
-            modelBuilder.Entity("Airbnb_PWEB.Models.ReservationImage", b =>
-                {
-                    b.HasOne("Airbnb_PWEB.Models.Reservation", "Reservation")
-                        .WithMany("ImagesReservation")
-                        .HasForeignKey("ReservationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Reservation");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -4,18 +4,22 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Categories</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (User.IsInRole("Admin")) { 
+    <p>
+        <a asp-action="Create">Add Category</a>
+    </p>
+}
 <table class="table" id="mytable">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-            <th></th>
+            <th>
+                Add Checklist
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -26,15 +30,14 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @if(User.IsInRole("Admin"))
+                    @if (User.IsInRole("Admin"))
                     {
-                    <a asp-action="Edit" asp-route-id="@item.CategoryId">Edit</a> 
-                    <a asp-action="Details" asp-route-id="@item.CategoryId">Details</a> 
-                    <a asp-action="Delete" asp-route-id="@item.CategoryId">Delete</a>
+                        <a asp-action="Edit" asp-route-id="@item.CategoryId">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.CategoryId">Delete</a>
                     }
                     @if (User.IsInRole("Owner_Manager"))
                     {
-                    <a class="btn btn-primary" asp-controller="CheckLists" asp-action="Create" asp-route-id=@item.CategoryId>Nova CheckList</a>
+                        <a class="btn btn-primary" asp-controller="CheckLists" asp-action="Create" asp-route-id=@item.CategoryId>New CheckList</a>
                     }
                 </td>
             </tr>
@@ -43,8 +46,8 @@
 </table>
 @section Scripts{
     <script>
-    $(document).ready(function () {
-        $('#mytable').DataTable();
-    });
+        $(document).ready(function () {
+            $('#mytable').DataTable();
+        });
     </script>
 }
