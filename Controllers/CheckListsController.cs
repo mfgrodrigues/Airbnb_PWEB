@@ -128,22 +128,11 @@ namespace Airbnb_PWEB.Controllers
                 return NotFound();
             }
 
-            var checkList = await _context.CheckList
-                .FirstOrDefaultAsync(m => m.CheckListId == id);
+            var checkList = await _context.CheckList.FindAsync(id);
             if (checkList == null)
             {
                 return NotFound();
             }
-
-            return View(checkList);
-        }
-
-        // POST: CheckLists/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var checkList = await _context.CheckList.FindAsync(id);
             _context.CheckList.Remove(checkList);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

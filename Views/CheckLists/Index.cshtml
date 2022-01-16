@@ -26,7 +26,7 @@
                     @Html.DisplayFor(modelItem => item.Category.Name)
                 </td>
                 <td>
-                    <a asp-controller="CheckItems" asp-action="Index" asp-route-id="@item.CheckListId"><img src="resources/details.svg" width="4%" alt="Detalhes" /></a>
+                    <a asp-controller="CheckItems" asp-action="Index" asp-route-id="@item.CheckListId"><img src="resources/details.svg" width="4%" alt="See Items" /></a>
                     <a asp-action="Delete" asp-route-id="@item.CheckListId"><img src="resources/delete.svg" width="4%" alt="Remover"></a>
                     <a asp-controller="CheckItems" asp-action="Create" asp-route-id="@item.CheckListId"><img src="resources/add.png" width="4%" alt="Add Item" /></a>
                 </td>
