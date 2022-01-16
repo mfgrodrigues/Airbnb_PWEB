@@ -6,12 +6,12 @@
 
 <h1>Properties</h1>
 
-<p>
+<div class="card-header py-3">
     @if (User.IsInRole("Owner_Manager"))
     {
-        <a asp-action="Create">Add Property</a>
+        <a class="m-0 font-weight-bold text-primary" asp-action="Create">Add Property</a>
     }
-</p>
+</div>
 <table class="table" id="mytable">
     <thead>
         <tr>
