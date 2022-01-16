@@ -5,10 +5,10 @@ namespace Airbnb_PWEB.Models
     public class Evaluation
     {
         public int EvaluationId { get; set; }
-        //[Required]
+        [Required]
         [DataType(DataType.MultilineText)]
         public string Comment { get; set; }
-        //[Required]
+        [Required]
         public int Classification { get; set; }
         
         public int ReservationId { get; set; }

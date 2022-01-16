@@ -37,12 +37,8 @@
                             <li class="nav-link">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="Index">My Reservations</a>
                             </li>
-
                             <li class="nav-link">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Items" asp-action="Index">Items</a>
-                            </li>
-                            <li class="nav-link">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Evaluations" asp-action="Index">Evaluations</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Evaluations" asp-action="Index">My Reviews</a>
                             </li>
                         } 
                        @if (User.IsInRole("Owner_Manager"))
@@ -60,7 +56,7 @@
                                  <button class="dropbtn">Employeers</button>
                                     <div class="dropdown-content">
                                         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Add Employeer</a>
-                                        <a class="nav-link text-dark" asp-controller="Companies" asp-action="Index">Manager Employeers</a>
+                                        <a class="nav-link text-dark" asp-controller="Companies" asp-action="Index">Manage Employeers</a>
                                     </div>
                             </div>
                        }

@@ -5,49 +5,125 @@
 }
 
 <h1>Details</h1>
+<h4>Reservation</h4>
+<div>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+        .mySlides {
+            display: none;
+        }
+    </style>
+    <body>
+
+        <div class="w3-content w3-display-container">
+
+            @foreach (var image in Model.Property.Images)
+            {
+                {
+                    <img class="mySlides" src="data:image.FileType;base64,@Convert.ToBase64String(image.Data, 0, image.Data.Length)" style="width:100%; height:400px">
+                }
+            }
+
+            <button class="prev" onclick="plusDivs(-1)">&#10094;</button>
+            <button class="next" onclick="plusDivs(1)">&#10095;</button>
+        </div>
+
+        <style>
+            .prev, .next {
+                cursor: pointer;
+                position: absolute;
+                top: 50%;
+                width: auto;
+                padding: 16px;
+                margin-top: -22px;
+                color: white;
+                font-weight: bold;
+                font-size: 18px;
+                transition: 0.6s ease;
+                border: none;
+                background-color: transparent;
+                user-select: none;
+            }
+
+            /* Position the "next button" to the right */
+            .next {
+                right: 0;
+                border: none;
+            }
+
+                /* On hover, add a black background color with a little bit see-through */
+                .prev:hover, .next:hover {
+                    background-color: transparent;
+                    border: none;
+                }
+        </style>
+
+        <script>
+            var slideIndex = 1;
+            showDivs(slideIndex);
+
+            function plusDivs(n) {
+                showDivs(slideIndex += n);
+            }
+
+            function showDivs(n) {
+                var i;
+                var x = document.getElementsByClassName("mySlides");
+                if (n > x.length) { slideIndex = 1 }
+                if (n < 1) { slideIndex = x.length }
+                for (i = 0; i < x.length; i++) {
+                    x[i].style.display = "none";
+                }
+                x[slideIndex - 1].style.display = "block";
+            }
+        </script>
+
+    </body>
+</div>
+
 
 
 <div>
-    <h4>Reservation</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Property.Tittle)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Property.Tittle)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Property.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Property.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Property.pricePerNigth)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Property.pricePerNigth)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Property.City)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Property.City)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CheckIn)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CheckIn)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CheckOut)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CheckOut)
-        </dd>
-    </dl>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Property.Tittle)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Property.Tittle)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Property.Description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Property.Description)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Property.pricePerNigth)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Property.pricePerNigth)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Property.City)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Property.City)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CheckIn)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CheckIn)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CheckOut)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CheckOut)
+            </dd>
+        </dl>
         @if (@Model.ApprovalComment != null)
         {
             <dt class="col-sm-2">
@@ -126,8 +202,15 @@
                         }
                     }
                 }
-</div>
-<div>
-    <br />
-    <a asp-action="Index" asp-route-id="@Model.PropertyId">Back to List</a>
-</div>
+    </div>
+    <div>
+        @if (User.IsInRole("Owner_Manager") || User.IsInRole("Owner_Employeer"))
+        {
+            <a asp-action="Index" asp-route-id="@Model.PropertyId">Back to List</a>
+        }
+        else
+        {
+            <a asp-action="Index">Back to List</a>
+        }
+    </div>
+<br />

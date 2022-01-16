@@ -15,5 +15,6 @@ namespace Airbnb_PWEB.Models
         public string Name { get; set; }
 
         public virtual ICollection<Property> Properties { get; set; }
+
     }
 }

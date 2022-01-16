@@ -43,6 +43,13 @@ namespace Airbnb_PWEB
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddAuthorization(
+                options =>
+                {
+                    options.AddPolicy("AccessDeniedEmployeer", policy => policy.RequireRole("Client","Admin","Owner_Manager"));
+                });
+
             services.AddControllersWithViews();
         }
 

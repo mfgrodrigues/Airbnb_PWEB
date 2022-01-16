@@ -217,15 +217,5 @@ namespace Airbnb_PWEB.Controllers
             return _context.Properties.Any(e => e.Id == id);
         }
 
-
-        public async Task<IActionResult> Search(string text2search)
-        {
-            var applicationDbContext = _context.Properties.Include(p => p.Images);
-
-            return View("Index", await applicationDbContext.Where(p => p.Tittle.ToLower().Contains(text2search.ToLower()) || 
-                                                                  p.Description.ToLower().Contains(text2search.ToLower())|| 
-                                                                  p.City.ToLower().Contains(text2search.ToLower())).ToListAsync());
-
-        }
     }
 }

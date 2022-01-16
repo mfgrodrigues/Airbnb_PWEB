@@ -185,7 +185,8 @@ namespace Airbnb_PWEB.Controllers
                 return NotFound();
             }
 
-            var reservation = await _context.Reservations.Include(p=> p.ImagesReservation)
+            var reservation = await _context.Reservations.Include(p=>p.Property.Images)
+                                                          .Include(p=> p.ImagesReservation)
                                                          .Include(p => p.ResultExit.Itens)
                                                          .Include(p => p.ResultEntry.Itens)
                                                          .Include(p => p.Property)

@@ -1,6 +1,6 @@
 ﻿@model Airbnb_PWEB.Models.ApplicationUser
 
-<h1>Gerir Conta</h1>
+<h1>Manage Accounts</h1>
 
 <div>
     <hr />
@@ -39,11 +39,11 @@
     </dl>
     @if (!Model.EmailConfirmed)
     {
-        <a class="btn btn-primary" asp-action="Ativate" asp-route-id=@Model.Id>Ativar</a>
+        <a class="btn btn-primary" asp-action="Ativate" asp-route-id=@Model.Id>Activate</a>
     }
     else
     {
-        <a class="btn btn-danger" asp-action="Desactivate" asp-route-id=@Model.Id>Desativar</a>
+        <a class="btn btn-danger" asp-action="Desactivate" asp-route-id=@Model.Id>Disable</a>
     }
 
         <a class="btn btn-primary" asp-action="Back">Back to List</a>

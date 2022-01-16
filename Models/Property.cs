@@ -22,10 +22,10 @@ namespace Airbnb_PWEB.Models
         [Required]
         public string Address { get; set; }
         [Display(Name = "City")]
-        [StringLength(50, ErrorMessage = "Maximum 50")]
+        [StringLength(50, ErrorMessage = "Maximum 50 characters")]
         public string City { get; set; }
         [Display(Name = "Amenities")]
-        [StringLength(100, ErrorMessage = "Maximum 100")]
+        [StringLength(100, ErrorMessage = "Maximum 100 characters")]
         [DataType(DataType.MultilineText)]
         public string Amenities { get; set; }
         [Display(Name = "Images")]

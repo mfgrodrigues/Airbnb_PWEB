@@ -51,7 +51,14 @@ namespace Airbnb_PWEB.Controllers
                 return NotFound();
             }
 
+            var checkListAux = await _context.CheckList.Include(c=>c.Category).Where(c => c.Category.CategoryId == id).FirstOrDefaultAsync();
+            if (checkListAux != null)// ja existe uma criada 
+            {
+                TempData["AlertMessage"] = "CheckList already exists for Category "+ checkListAux.Category.Name;
+                return RedirectToAction(nameof(Index),"Categories");
+            }
             var category = await _context.Categories.Where(c => c.CategoryId == id).FirstOrDefaultAsync();
+
             if (ModelState.IsValid)
             {
                 checkList.Category = category;

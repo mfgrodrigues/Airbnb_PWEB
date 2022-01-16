@@ -71,8 +71,11 @@ namespace Airbnb_PWEB.Controllers
         {
             var evaluationAvailable = _context.Evaluation.Where(e => e.ReservationId == id).Count();
             if (evaluationAvailable > 0) {
+                TempData["AlertMessage"] = "Already evaluated this property in this reservation ";
                 return RedirectToAction(nameof(Index),"Reservations");
             }
+
+
             //ViewData["ReservationId"] = new SelectList(_context.Reservations, "ReservationId", "ReservationId");
 
             return View();

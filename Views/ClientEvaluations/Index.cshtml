@@ -4,19 +4,19 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Avaliações de Clientes</h1>
+<h1>Clients Evaluation</h1>
 
 <table class="table" id="mytable">
     <thead>
         <tr>
             <th>
-                Cliente
+                Client
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Comment)
             </th>
             <th>
-                Opções
+                Options
             </th>
         </tr>
     </thead>
@@ -32,10 +32,10 @@
                 </td>
                 @if (User.IsInRole("Owner_Manager"))
                 {
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.ClientEvaluationId">Editar</a> |
-                        <a asp-action="Delete" asp-route-id="@item.ClientEvaluationId">Eliminar</a>
-                    </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ClientEvaluationId"><img src="resources/edit.svg" width="5%" alt="Editar" /></a>
+                <a asp-action="Delete" asp-route-id="@item.ClientEvaluationId"><img src="resources/delete.svg" width="5%" alt="Remover" /></a>
+            </td>
                 }
             </tr>
         }

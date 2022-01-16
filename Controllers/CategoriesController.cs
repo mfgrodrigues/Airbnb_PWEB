@@ -42,9 +42,15 @@ namespace Airbnb_PWEB.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (_context.Categories.Where(c => c.Name == category.Name).Count() > 0)
+                {
+                    ModelState.AddModelError("Name", "Category name already exists");
+                }
+                else { 
                 _context.Add(category);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+                }
             }
             return View(category);
         }

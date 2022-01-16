@@ -4,9 +4,17 @@
     ViewData["Title"] = "Index";
 }
 
+@if (TempData["AlertMessage"] != null) { 
+<div class="alert alert-danger">
+    <strong></strong> @TempData["AlertMessage"]
+
+</div>
+}
+
 <h1>Categories</h1>
 
-@if (User.IsInRole("Admin")) { 
+@if (User.IsInRole("Admin"))
+{
     <p>
         <a asp-action="Create">Add Category</a>
     </p>
@@ -35,7 +43,7 @@
                         <a asp-action="Edit" asp-route-id="@item.CategoryId">Edit</a>
                         <a asp-action="Delete" asp-route-id="@item.CategoryId">Delete</a>
                     }
-                    
+
                     @if (User.IsInRole("Owner_Manager"))
                     {
                         <a class="btn btn-primary" asp-controller="CheckLists" asp-action="Create" asp-route-id=@item.CategoryId>New CheckList</a>
