@@ -6,16 +6,19 @@
 
 <h1>Properties</h1>
 
-<div class="card-header py-3">
+<div class="card shadow mb-4 col-12">
+    <div class="card-header py-3">
     @if (User.IsInRole("Owner_Manager"))
-    {
-        <a class="m-0 font-weight-bold text-primary" asp-action="Create">Add Property</a>
+    {   <div>
+         <a class="m-0 font-weight-bold text-primary" asp-action="Create">Add Property</a>
+        </div>
     }
-</div>
-<table class="table" id="mytable">
-    <thead>
-        <tr>
-            <th>
+    </div>  
+    <div class="card-header py-3">
+        <table class="table" id="mytable">
+            <thead>
+                 <tr>
+                    <th>
                 Property
             </th>
             <th>
@@ -76,6 +79,8 @@
         }
     </tbody>
 </table>
+</div>
+</div>
 @section Scripts{
     <script>
     $(document).ready(function () {

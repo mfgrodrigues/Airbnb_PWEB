@@ -6,10 +6,10 @@
 
 <h1>Create</h1>
 
-<h4>Nova Reserva</h4>
+<h4>New Reservation</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="card shadow mb-4 col-10">
+    <div  class="card-header py-3">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -26,12 +26,15 @@
                 <input type="submit" value="Reservar" class="btn btn-primary" />
             </div>
         </form>
+
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
+
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
