@@ -1,36 +1,37 @@
 ﻿@model Airbnb_PWEB.Models.Company
 
-<h1>Funcionários da Empresa</h1>
+<h1>Company Employeers</h1>
 
 <table class="table" id="mytable">
     <thead>
         <tr>
-            <th>Primeiro Nome</th>
-            <th>Ultimo Nome</th>
+            <th>Name</th>
+            <th>Surname</th>
             <th>Email</th>
-            <th>Estado Conta</th>
-            <th>Opções</th>
+            <th>Status Account</th>
+            <th>Options</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var utilizador in Model.Employeers)
         {
-
+        <tr>
             <td>@utilizador.FirstName</td>
             <td>@utilizador.LastName</td>
             <td>@utilizador.Email</td>
             @if (@utilizador.EmailConfirmed)
             {
-            <td>Ativada</td>
+                <td>Enable</td>
             }
             else
             {
-            <td>Desativada</td>
+                <td>Disable</td>
             }
             <td>
-            <a class="btn btn-primary"  asp-controller="Roles" asp-action="Edit" asp-route-id=@utilizador.Id asp-action="Edit">Edit</a>
-            <a class="btn btn-primary" asp-controller="Roles" asp-action="ManageAccounts" asp-route-id="@utilizador.Id" >Gerir</a>
+                <a class="btn btn-primary" asp-controller="Roles" asp-action="Edit" asp-route-id=@utilizador.Id>Edit</a>
+                <a class="btn btn-primary" asp-controller="Roles" asp-action="ManageAccounts" asp-route-id="@utilizador.Id">Manage</a>
             </td>
+        </tr>
         }
     </tbody>
     </table>

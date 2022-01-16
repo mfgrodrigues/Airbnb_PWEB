@@ -10,6 +10,5 @@ namespace Airbnb_PWEB.Models
 
         public virtual ICollection<ApplicationUser> Employeers { get; set; }
 
-        //public virtual ICollection<Property> Properties { get; set; }
     }
 }

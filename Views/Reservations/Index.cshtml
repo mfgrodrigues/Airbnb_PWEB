@@ -100,8 +100,8 @@
                             <a asp-action="Details" asp-route-id="@item.ReservationId">Details</a>
                             @if (@item.Status == StatusReservation.Pending)
                             {
-                                <a> | </a> <a asp-controller="ClientEvaluations" asp-action="Index" asp-route-id="@item.ApplicationUser.Id">Client Evaluation</a> 
-                                <a class="btn btn-primary" asp-action="Confirm" asp-route-id=@item.ReservationId>Confirm</a> 
+                                <a> | </a> <a asp-controller="ClientEvaluations" asp-action="Index" asp-route-id="@item.ApplicationUser.Id">Client Evaluation</a>
+                                <a class="btn btn-primary" asp-action="Confirm" asp-route-id=@item.ReservationId>Confirm</a>
                                 <a class="btn btn-danger" asp-action="Cancel" asp-route-id=@item.ReservationId>Cancel</a>
                             }
                             @if (@item.Status == StatusReservation.Canceled)
@@ -123,7 +123,7 @@
                             {
                                 if (item.ResultExit == null)
                                 {
-                                     <a> | </a><a asp-controller="CheckItems" asp-action="CheckEdit" asp-route-id="@item.ReservationId">Fill CheckList CheckOut</a>
+                                    <a> | </a><a asp-controller="CheckItems" asp-action="CheckEdit" asp-route-id="@item.ReservationId">Fill CheckList CheckOut</a>
                                 }
                                 else
                                 {
@@ -144,6 +144,7 @@
                         else if (User.IsInRole("Owner_Manager"))
                         {
                             <a asp-controller="ClientEvaluations" asp-action="Create" asp-route-id="@item.ReservationId">Add Client Evaluation</a>
+                            <a> | </a> <a asp-action="Details" asp-route-id="@item.ReservationId">Details</a>
                         }
                     </td>
 

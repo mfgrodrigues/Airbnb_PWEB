@@ -180,7 +180,7 @@
 <script>
   function updateMap() {
 
-    var address = '@Html.Raw(Model.Address)';
+      var address = '@Html.Raw(Model.Address)' + ',' + '@Html.Raw(Model.City)';
 
     document.getElementById("gmap_canvas").src =
       "https://maps.google.com/maps?q=" + address + "&t=&z=16&ie=UTF8&iwloc=&output=embed";
