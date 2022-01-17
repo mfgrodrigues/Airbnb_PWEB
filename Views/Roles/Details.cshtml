@@ -1,9 +1,9 @@
 ﻿@model Airbnb_PWEB.Models.RoleViewModel
 
 <h1> Details @Model.Nome</h1>
-<br />
-<br />
-<table class="table table-bordered table-hover" id="mytable">
+<div class="card shadow mb-4 col-12">
+        <div class="card-header py-3">
+<table class="table" id="mytable">
     <thead>
         <tr>
             <th>Id</th>
@@ -39,8 +39,10 @@
         }
     </tbody>
 </table>
+</div>
+</div>
 
-<a class="btn btn-primary" asp-action="Index">Back to List Roles</a>
+<a asp-action="Index">Back to List Roles</a>
 @section Scripts{
     <script>
         $(document).ready(function () {

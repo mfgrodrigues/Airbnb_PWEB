@@ -1,9 +1,9 @@
 ﻿@model Airbnb_PWEB.Models.ApplicationUser
 
 
-<h1>Edit Profile</h1>
-
-<div class="col-md-4">
+<div class="card shadow mb-4 col-12">
+    <div  class="card-header py-3">
+        <h4>Edit User Profile</h4>
     <form asp-action="Edit">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
@@ -29,15 +29,19 @@
             <option value="Owner_Manager">Owner_Manager</option>
         </select>
         </div>
-<div class="form-group">
+        <div class="form-group">
     <input type="submit" value="Save" asp-route-id="@Model.Id" class="btn btn-primary" />
-</div>
+        </div>
     </form>
-</div>
+
 
 <div>
-    <a class="btn btn-primary" asp-action="Back">Back to List</a>
+    <a asp-action="Back">Back to List</a>
 </div>
+</div>
+</div>
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

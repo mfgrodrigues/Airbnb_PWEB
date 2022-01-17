@@ -4,12 +4,10 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
-
 <h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Reservation</h4>
-    <hr />
+<hr />
+<div class="card shadow mb-4 col-10">
+     <div class="card-body">
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CheckIn)
@@ -42,4 +40,6 @@
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>
+
+    </div>
 </div>

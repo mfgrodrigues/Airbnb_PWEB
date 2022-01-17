@@ -2,8 +2,8 @@
 
 <h1>Manage Accounts</h1>
 
-<div>
-    <hr />
+<div class="card shadow mb-4 col-12">
+        <div class="card-body">
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Id)
@@ -46,5 +46,6 @@
         <a class="btn btn-danger" asp-action="Desactivate" asp-route-id=@Model.Id>Disable</a>
     }
 
-        <a class="btn btn-primary" asp-action="Back">Back to List</a>
+        <a asp-action="Back">Back to List</a>
+</div>
 </div>

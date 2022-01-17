@@ -6,7 +6,8 @@
 
 <h1>Reviews</h1>
 
-
+<div class="card shadow mb-4 col-12">
+        <div class="card-header py-3">
 <table class="table" id="mytable">
     <thead>
         <tr>
@@ -50,13 +51,15 @@
                     @Html.DisplayFor(modelItem => item.Comment)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.EvaluationId"><img src="resources/edit.svg" width="10%" alt="Editar" /></a> 
-                    <a asp-action="Delete" asp-route-id="@item.EvaluationId"><img src="resources/delete.svg" width="10%" alt="Remover" /></a>
+                    <a asp-action="Edit" asp-route-id="@item.EvaluationId"><img src="resources/edit.svg" width="7%" alt="Editar" /></a> 
+                    <a asp-action="Delete" asp-route-id="@item.EvaluationId"><img src="resources/delete.svg" width="7%" alt="Remover" /></a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+</div>
+</div>
 @section Scripts{
     <script>
     $(document).ready(function () {

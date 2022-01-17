@@ -117,8 +117,9 @@ namespace Airbnb_PWEB.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ClientEvaluationId,Company, Comment,ReservationId")] ClientEvaluation clientEvaluation)
+        public async Task<IActionResult> Edit(int id,ClientEvaluation clientEvaluation)
         {
+            var clientEvaluation2 = _context.ClientEvaluations.Where(c=> c.ClientEvaluationId == id).FirstOrDefault();
             if (id != clientEvaluation.ClientEvaluationId)
             {
                 return NotFound();
@@ -128,7 +129,8 @@ namespace Airbnb_PWEB.Controllers
             {
                 try
                 {
-                    _context.Update(clientEvaluation);
+                    clientEvaluation2.Comment = clientEvaluation.Comment;
+                    _context.Update(clientEvaluation2);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

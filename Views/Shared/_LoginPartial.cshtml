@@ -8,6 +8,7 @@
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name</a>
         </li>
+        <div class="topbar-divider d-none d-sm-block"></div>
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Properties", new { area = "" })">
                 <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
@@ -19,6 +20,7 @@
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
         </li>
+        <div class="topbar-divider d-none d-sm-block"></div>
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
         </li>

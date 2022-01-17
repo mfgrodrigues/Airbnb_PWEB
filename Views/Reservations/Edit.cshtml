@@ -4,12 +4,10 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>Reservation</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="card shadow mb-4 col-10">
+    <div  class="card-header py-3">
+       <h4>Add Comment</h4>
+       </div>
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ReservationId" />
@@ -22,12 +20,10 @@
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
-    </div>
-</div>
-
 <div>
     <a asp-action="Index" asp-route-id="@Model.PropertyId">Back to List</a>
 </div>
+    </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

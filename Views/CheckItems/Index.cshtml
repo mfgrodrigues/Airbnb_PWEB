@@ -3,12 +3,13 @@
 @{
     ViewData["Title"] = "Index";
 }
+<h1>Add CheckItem</h1>
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New Item</a>
-</p>
+<div class="card shadow mb-4 col-12">
+      <div class="card-header py-3">
+          <p>
+             <a class="btn btn-info" asp-action="Create">Create New Item</a>
+            </p>
 <table class="table" id="mytable">
     <thead>
         <tr>
@@ -38,6 +39,8 @@
 
 <a asp-controller="CheckLists"asp-action="Index">Back to List</a>
 
+</div>
+</div>
 @section Scripts{
     <script>
         $(document).ready(function () {

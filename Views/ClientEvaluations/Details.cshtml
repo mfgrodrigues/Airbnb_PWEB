@@ -4,11 +4,10 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>ClientEvaluation</h4>
-    <hr />
+<h1>Client Evaluation Details</h1>
+<hr />
+<div class="card shadow mb-4 col-12">
+        <div class="card-body">
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Comment)
@@ -23,8 +22,9 @@
             @Html.DisplayFor(model => model.Reservation.ReservationId)
         </dd>
     </dl>
-</div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.ClientEvaluationId">Edit</a> |
     <a asp-action="Index">Back to List</a>
+</div>
+</div>
 </div>

@@ -4,21 +4,24 @@
     ViewData["Title"] = "Index";
 }
 
-@if (TempData["AlertMessage"] != null) { 
-<div class="alert alert-danger">
-    <strong></strong> @TempData["AlertMessage"]
+<h1>Categories</h1> 
 
-</div>
-}
+<div class="card shadow mb-4 col-12">
+    @if (TempData["AlertMessage"] != null) { 
+    <div class="alert alert-danger">
+        <strong></strong> @TempData["AlertMessage"]
+    </div>
+    }
 
-<h1>Categories</h1>
+    <div class="card-header py-3">
+        @if (User.IsInRole("Admin"))
+        {
+            <p>
+                <a class="btn btn-info" asp-action="Create">Add Category</a>
+            </p>
+        }   
 
-@if (User.IsInRole("Admin"))
-{
-    <p>
-        <a asp-action="Create">Add Category</a>
-    </p>
-}
+ <div class="card-header py-3">
 <table class="table" id="mytable">
     <thead>
         <tr>
@@ -40,8 +43,8 @@
                 <td>
                     @if (User.IsInRole("Admin"))
                     {
-                        <a asp-action="Edit" asp-route-id="@item.CategoryId"><img src="resources/edit.svg" width="5%" alt="Edit" /></a>
-                        <a asp-action="Delete" asp-route-id="@item.CategoryId"><img src="resources/delete.svg" width="5%" alt="Delete" /></a>
+                        <a asp-action="Edit" asp-route-id="@item.CategoryId"><img src="resources/edit.svg" width="3%" alt="Edit" /></a>
+                        <a asp-action="Delete" asp-route-id="@item.CategoryId"><img src="resources/delete.svg" width="3%" alt="Delete" /></a>
                     }
 
                     @if (User.IsInRole("Owner_Manager"))
@@ -53,6 +56,9 @@
         }
     </tbody>
 </table>
+</div>
+</div>
+</div>
 @section Scripts{
     <script>
         $(document).ready(function () {
