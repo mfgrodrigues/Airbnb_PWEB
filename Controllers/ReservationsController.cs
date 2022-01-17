@@ -225,12 +225,14 @@ namespace Airbnb_PWEB.Controllers
             if (ModelState.IsValid)
             {
                 if (reservation.CheckIn < DateTime.Now)
-                    ModelState.AddModelError("CheckIn", "Insira uma data válida");
+                    TempData["AlertMessage"] = "Please enter a valid date";
                 else if (reservation.CheckIn >= reservation.CheckOut)
-                    ModelState.AddModelError("CheckIn", "Insira um check-in prévio ao check-out");
+                    ModelState.AddModelError("CheckIn", "Enter a check-in prior to check-out");
                 else if (_context.Reservations.Where(r => r.PropertyId == reservation.PropertyId
-                         && r.CheckIn.Date <= reservation.CheckIn.Date && r.CheckOut.Date >= reservation.CheckIn.Date).Count() > 0)
-                    ModelState.AddModelError("CheckIn", "O imóvel não se encontra disponível para reserva nas datas indicadas");
+                         && !(reservation.CheckIn.Date  < r.CheckIn.Date && reservation.CheckOut.Date < r.CheckIn.Date)
+                         && !(reservation.CheckIn.Date  > r.CheckOut.Date && reservation.CheckOut.Date > r.CheckOut.Date)).Count() > 0)
+                         TempData["AlertMessage"] = "The property is not available for reserve on the dates indicated";
+
                 else {
                 _context.Add(reservation);
                 await _context.SaveChangesAsync();

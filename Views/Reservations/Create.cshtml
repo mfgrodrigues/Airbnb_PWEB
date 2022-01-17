@@ -7,6 +7,12 @@
 <div class="card shadow mb-4 col-4">
     <div  class="card-header py-3">
         <h4>New Reservation</h4>
+                @if (TempData["AlertMessage"] != null)
+        {
+        <div class="alert alert-danger">
+                <strong></strong> @TempData["AlertMessage"]
+        </div>
+        }
         </div>
         <div class="card-body">
         <form asp-action="Create">
