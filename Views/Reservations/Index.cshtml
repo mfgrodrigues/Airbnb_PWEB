@@ -6,153 +6,154 @@
 
 <h1>Reservations</h1>
 
-@if (TempData["AlertMessage"] != null)
-{
- <div class="alert alert-danger">
-        <strong></strong> @TempData["AlertMessage"]
-</div>
-}
+
 <div class="card shadow mb-4 col-12">
     <div class="card-header py-3">
-    <table class="table" id="mytable">
-        <thead>
-            <tr>
-                @if (User.IsInRole("Client"))
-                {
-                    <th>
-                        Property
-                    </th>
-                }
-                else
-                {
-                    <th>
-                        Client
-                    </th>
-                }
-                <th>
-                    Check-In
-                </th>
-                <th>
-                    Check-Out
-                </th>
-                <th>
-                    Status
-                </th>
-                <th>
-                    Options
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+        @if (TempData["AlertMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                <strong></strong> @TempData["AlertMessage"]
+            </div>
+        }
+        <table class="table" id="mytable">
+            <thead>
                 <tr>
                     @if (User.IsInRole("Client"))
                     {
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Property.Tittle)
-                        </td>
+                        <th>
+                            Property
+                        </th>
                     }
                     else
                     {
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ApplicationUser.Email)
-                        </td>
+                        <th>
+                            Client
+                        </th>
                     }
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CheckIn)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CheckOut)
-                    </td>
-                    <td>
-                        @if (item.Status == StatusReservation.Approved)
+                    <th>
+                        Check-In
+                    </th>
+                    <th>
+                        Check-Out
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Options
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        @if (User.IsInRole("Client"))
                         {
-                            <span class="btn btn-success ">Approved</span>
-                        }
-                        else if (item.Status == StatusReservation.Canceled)
-                        {
-                            <span class="btn btn-danger">Canceled</span>
-                        }
-                        else if (item.Status == StatusReservation.Checkin)
-                        {
-                            <span class="btn btn-secondary">Checkin</span>
-                        }
-                        else if (item.Status == StatusReservation.Checkout)
-                        {
-                            <span class="btn btn-success">Checkout</span>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Property.Tittle)
+                            </td>
                         }
                         else
                         {
-                            <span class=" btn btn-warning">Pending</span>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ApplicationUser.Email)
+                            </td>
                         }
-                    </td>
-                    <td>
-                        @if (User.IsInRole("Client"))
-                        {
-                            @if (@item.Status == StatusReservation.Checkout)
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CheckIn)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CheckOut)
+                        </td>
+                        <td>
+                            @if (item.Status == StatusReservation.Approved)
                             {
-                                <a asp-controller="Evaluations" asp-action="Create" asp-route-id="@item.ReservationId">Add Review</a><a> |</a>
+                                <span class="btn btn-success ">Approved</span>
                             }
-                            <a asp-action="Details" asp-route-id="@item.ReservationId">Details</a>
-                        }
-                        else if (User.IsInRole("Owner_Employeer"))
-                        {
-                            <a asp-action="Details" asp-route-id="@item.ReservationId">Details</a>
-                            @if (@item.Status == StatusReservation.Pending)
+                            else if (item.Status == StatusReservation.Canceled)
                             {
-                                <a> | </a> <a asp-controller="ClientEvaluations" asp-action="Index" asp-route-id="@item.ApplicationUser.Id">Client Evaluation</a>
-                                <a class="btn btn-primary" asp-action="Confirm" asp-route-id=@item.ReservationId>Confirm</a>
-                                <a class="btn btn-danger" asp-action="Cancel" asp-route-id=@item.ReservationId>Cancel</a>
+                                <span class="btn btn-danger">Canceled</span>
                             }
-                            @if (@item.Status == StatusReservation.Canceled)
+                            else if (item.Status == StatusReservation.Checkin)
                             {
-                                <a> | </a><a asp-action="Edit" asp-route-id="@item.ReservationId">Add Comment</a>
+                                <span class="btn btn-secondary">Checkin</span>
                             }
-                            @if (@item.Status == StatusReservation.Approved)
+                            else if (item.Status == StatusReservation.Checkout)
                             {
-                                @if (@item.ResultEntry == null)
+                                <span class="btn btn-success">Checkout</span>
+                            }
+                            else
+                            {
+                                <span class=" btn btn-warning">Pending</span>
+                            }
+                        </td>
+                        <td>
+                            @if (User.IsInRole("Client"))
+                            {
+                                @if (@item.Status == StatusReservation.Checkout)
                                 {
-                                    <a> | </a><a asp-controller="CheckItems" asp-action="CheckEdit" asp-route-id="@item.ReservationId">Fill CheckList CheckIn</a>
+                                    <a asp-controller="Evaluations" asp-action="Create" asp-route-id="@item.ReservationId">Add Review</a><a> |</a>
                                 }
-                                else
-                                {
-                                    <a class="btn btn-primary" asp-action="CheckedIn" asp-route-id=@item.ReservationId>Checkin</a>
-                                }
+                                <a asp-action="Details" asp-route-id="@item.ReservationId">Details</a>
                             }
-                            @if (@item.Status == StatusReservation.Checkin)
+                            else if (User.IsInRole("Owner_Employeer"))
                             {
-                                if (item.ResultExit == null)
+                                <a asp-action="Details" asp-route-id="@item.ReservationId">Details</a>
+                                @if (@item.Status == StatusReservation.Pending)
                                 {
-                                    <a> | </a><a asp-controller="CheckItems" asp-action="CheckEdit" asp-route-id="@item.ReservationId">Fill CheckList CheckOut</a>
+                                    <a> | </a> <a asp-controller="ClientEvaluations" asp-action="Index" asp-route-id="@item.ApplicationUser.Id">Client Evaluation</a>
+                                    <a class="btn btn-primary" asp-action="Confirm" asp-route-id=@item.ReservationId>Confirm</a>
+                                    <a class="btn btn-danger" asp-action="Cancel" asp-route-id=@item.ReservationId>Cancel</a>
                                 }
-                                else
+                                @if (@item.Status == StatusReservation.Canceled)
                                 {
-                                    <a class="btn btn-primary" asp-action="CheckedOut" asp-route-id=@item.ReservationId>Checkout</a>
-                                    <form asp-action="AddPhotos" asp-route-id="@item.ReservationId" method="post" enctype="multipart/form-data">
-                                        <div class="form-group">
-                                            <br />
-                                            <input type="file" name="files" multiple required />
-                                            <span asp-validation-for="@item.ImagesReservation" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="submit" value="Save" class="btn btn-primary" />
-                                        </div>
-                                    </form>
+                                    <a> | </a><a asp-action="Edit" asp-route-id="@item.ReservationId">Add Comment</a>
+                                }
+                                @if (@item.Status == StatusReservation.Approved)
+                                {
+                                    @if (@item.ResultEntry == null)
+                                    {
+                                        <a> | </a><a asp-controller="CheckItems" asp-action="CheckEdit" asp-route-id="@item.ReservationId">Fill CheckList CheckIn</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-primary" asp-action="CheckedIn" asp-route-id=@item.ReservationId>Checkin</a>
+                                    }
+                                }
+                                @if (@item.Status == StatusReservation.Checkin)
+                                {
+                                    if (item.ResultExit == null)
+                                    {
+                                        <a> | </a><a asp-controller="CheckItems" asp-action="CheckEdit" asp-route-id="@item.ReservationId">Fill CheckList CheckOut</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-primary" asp-action="CheckedOut" asp-route-id=@item.ReservationId>Checkout</a>
+                                        <form asp-action="AddPhotos" asp-route-id="@item.ReservationId" method="post" enctype="multipart/form-data">
+                                            <div class="form-group">
+                                                <br />
+                                                <input type="file" name="files" multiple required />
+                                                <span asp-validation-for="@item.ImagesReservation" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" value="Save" class="btn btn-primary" />
+                                            </div>
+                                        </form>
+                                    }
                                 }
                             }
-                        }
-                        else if (User.IsInRole("Owner_Manager"))
-                        {
-                            <a asp-controller="ClientEvaluations" asp-action="Create" asp-route-id="@item.ReservationId">Add Client Evaluation</a>
-                            <a> | </a> <a asp-action="Details" asp-route-id="@item.ReservationId">Details</a>
-                        }
-                    </td>
+                            else if (User.IsInRole("Owner_Manager"))
+                            {
+                                <a asp-controller="ClientEvaluations" asp-action="Create" asp-route-id="@item.ReservationId">Add Client Evaluation</a>
+                                <a> | </a> <a asp-action="Details" asp-route-id="@item.ReservationId">Details</a>
+                            }
+                        </td>
 
-                </tr>
-            }
-        </tbody>
-    </table>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
     </div>
     @section Scripts{

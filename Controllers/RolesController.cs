@@ -157,19 +157,27 @@ namespace Airbnb_PWEB.Controllers
                     userOld.LastName = user.LastName;
                     userOld.PhoneNumber = user.PhoneNumber;
 
+                    if(user.FunctionRole == null)   // gestor a editar dados do funcionario
+                    {
+                        context.Update(userOld);
+                        await context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index),"Companies");
+                    }
+
                     if (user.FunctionRole.Equals("Client") && userOld.FunctionRole.Equals("Owner_Manager")){// ver se nao tem funcionarios nem imoveis dele
                         var companyOwner = context.Companies.Include(p=> p.Employeers).Where(p => p.Owner == userOld).FirstOrDefault();
                         var property = context.Properties.Include(p=>p.Company).Where(p => p.Company == companyOwner).FirstOrDefault();
 
-                        if(companyOwner.Employeers==null || property == null)
+                        if(companyOwner.Employeers.Count==0 && property == null)
                         {
+                            TempData["SuccessMessage"] = "Success changing Role from Manager to Client";
                             userOld.FunctionRole = user.FunctionRole;
                             await userManager.RemoveFromRoleAsync(userOld, "Owner_Manager");
                             await userManager.AddToRoleAsync(userOld, "Client");
                         }
                         else
                         {
-                            TempData["shortMessage"] = "O Gestor apresenta propriedades ou funcionarios associados à sua empresa";  
+                            TempData["AlertMessage"] = "Error! The Manager displays properties or employees associated with your company!";  
                             return RedirectToAction(nameof(Index));
                             //ModelState.AddModelError("Function Role", "O Gestor apresenta propriedades ou funcionarios associados à sua empresa");
                             //return View();

@@ -9,6 +9,7 @@ using Airbnb_PWEB.Data;
 using Airbnb_PWEB.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Airbnb_PWEB.Controllers
 {
@@ -24,6 +25,7 @@ namespace Airbnb_PWEB.Controllers
         }
 
         // GET: Evaluations
+
         public async Task<IActionResult> Index()    // cliente
         {
             var currentUser = await _userManager.GetUserAsync(User);
@@ -67,6 +69,7 @@ namespace Airbnb_PWEB.Controllers
         }
 
         // GET: Evaluations/Create
+        [Authorize(Roles = "Client")]
         public IActionResult Create(int id)
         {
             var evaluationAvailable = _context.Evaluation.Where(e => e.ReservationId == id).Count();
@@ -82,8 +85,7 @@ namespace Airbnb_PWEB.Controllers
         }
 
         // POST: Evaluations/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Client")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("EvaluationId,Comment,Classification,ReservationId")] Evaluation evaluation,int id)
@@ -101,6 +103,7 @@ namespace Airbnb_PWEB.Controllers
             return View(evaluation);
         }
 
+        [Authorize(Roles = "Client")]
         // GET: Evaluations/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -121,8 +124,7 @@ namespace Airbnb_PWEB.Controllers
         }
 
         // POST: Evaluations/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Client")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("EvaluationId,Comment,Classification, ReservationId")] Evaluation evaluation)
@@ -159,6 +161,7 @@ namespace Airbnb_PWEB.Controllers
         }
 
         // GET: Evaluations/Delete/5
+        [Authorize(Roles = "Client")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -178,6 +181,7 @@ namespace Airbnb_PWEB.Controllers
         }
 
         // POST: Evaluations/Delete/5
+        [Authorize(Roles = "Client")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

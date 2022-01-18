@@ -48,6 +48,7 @@ namespace Airbnb_PWEB
                 options =>
                 {
                     options.AddPolicy("AccessDeniedEmployeer", policy => policy.RequireRole("Client","Admin","Owner_Manager"));
+             
                 });
 
             services.AddControllersWithViews();

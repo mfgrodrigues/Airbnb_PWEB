@@ -101,7 +101,7 @@ namespace Airbnb_PWEB.Controllers
                 return NotFound();
 
             // itens dachecklist da categoria a que pertence a propriedade
-            var checkItemsList = _context.CheckItems.Where(c => c.CheckList.Category.CategoryId == category.CategoryId).ToList();
+            var checkItemsList = _context.CheckItems.Where(c => c.CheckList.Category.CategoryId == category.CategoryId ).ToList();
 
             if (checkItemsList == null)
             {
@@ -126,7 +126,13 @@ namespace Airbnb_PWEB.Controllers
             var checkItemsList = new List<CheckItem>();
             foreach (var item in checkValues)
             {
-                checkItemsList.Add( _context.CheckItems.Where(c => c.CheckItemId == item).FirstOrDefault());
+                var copia = _context.CheckItems.Where(c => c.CheckItemId == item).FirstOrDefault();
+                var newitem = new CheckItem() {
+                    Name = copia.Name,
+                    CheckListId = copia.CheckListId
+                    
+                };
+                checkItemsList.Add(newitem);
             }
 
             Result results = new Result()

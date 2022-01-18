@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Airbnb_PWEB.Data;
 using Airbnb_PWEB.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Airbnb_PWEB.Controllers
 {
+
+    [Authorize(Roles = "Owner_Manager")]
     public class CheckListsController : Controller
     {
         private readonly ApplicationDbContext _context;

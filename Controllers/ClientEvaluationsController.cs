@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Airbnb_PWEB.Data;
 using Airbnb_PWEB.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Airbnb_PWEB.Controllers
 {
@@ -23,6 +24,7 @@ namespace Airbnb_PWEB.Controllers
         }
 
         // GET: ClientEvaluations
+        [Authorize(Roles = "Owner_Manager,Owner_Employeer")]
         public async Task<IActionResult> Index(string id)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -39,6 +41,7 @@ namespace Airbnb_PWEB.Controllers
             return View(await evaluationlist.ToListAsync());
         }
 
+        [Authorize(Roles = "Owner_Manager,Owner_Employeer")]
         // GET: ClientEvaluations/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -59,6 +62,7 @@ namespace Airbnb_PWEB.Controllers
         }
 
         // GET: ClientEvaluations/Create
+        [Authorize(Roles = "Owner_Manager")]
         public IActionResult Create(int id)
         {
             var clientEvaluation = _context.ClientEvaluations.Where(e => e.ReservationId == id).Count();
@@ -67,14 +71,13 @@ namespace Airbnb_PWEB.Controllers
                 return View();
             }
             var reservation = _context.Reservations.Include(p => p.Property).Where(p => p.ReservationId == id).FirstOrDefault();
-            //ViewData["ReservationId"] = new SelectList(_context.Reservations, "ReservationId", "ReservationId");
-            return RedirectToAction("Index");
+            TempData["AlertMessage"] = "A comment has already been made for this reservation";
+            return RedirectToAction(nameof(Index),"Reservations", new { id = reservation.PropertyId });
 
         }
 
         // POST: ClientEvaluations/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Owner_Manager")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ClientEvaluationId, Company, Comment,ReservationId")] ClientEvaluation clientEvaluation,int id)
@@ -95,6 +98,7 @@ namespace Airbnb_PWEB.Controllers
             return View(clientEvaluation);
         }
 
+        [Authorize(Roles = "Owner_Manager")]
         // GET: ClientEvaluations/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -112,9 +116,8 @@ namespace Airbnb_PWEB.Controllers
             return View(clientEvaluation);
         }
 
+        [Authorize(Roles = "Owner_Manager")]
         // POST: ClientEvaluations/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id,ClientEvaluation clientEvaluation)
@@ -150,6 +153,7 @@ namespace Airbnb_PWEB.Controllers
             return View(clientEvaluation);
         }
 
+        [Authorize(Roles = "Owner_Manager")]
         // GET: ClientEvaluations/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -170,6 +174,7 @@ namespace Airbnb_PWEB.Controllers
         }
 
         // POST: ClientEvaluations/Delete/5
+        [Authorize(Roles = "Owner_Manager")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
