@@ -69,7 +69,7 @@ namespace Airbnb_PWEB.Controllers
             if (ModelState.IsValid)
             {
                 checkItem.CheckListId = id;
-                //checkItem.IsCheck = false;
+                checkItem.isCheck = false;
                 _context.Add(checkItem);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index), "CheckLists");
@@ -101,11 +101,12 @@ namespace Airbnb_PWEB.Controllers
                 return NotFound();
 
             // itens dachecklist da categoria a que pertence a propriedade
-            var checkItemsList = _context.CheckItems.Where(c => c.CheckList.Category.CategoryId == category.CategoryId ).ToList();
+            var checkItemsList = _context.CheckItems.Where(c => c.CheckList.Category.CategoryId == category.CategoryId && c.isCheck ==false).ToList();
 
-            if (checkItemsList == null)
+            if (checkItemsList.Count() == 0 )
             {
-                return NotFound();
+                TempData["AlertMessage"] = "CheckList does not contains checkitems";
+                return RedirectToAction(nameof(Index),"Reservations", new { id = reservation.PropertyId });
             }
 
             //ViewData["CheckListId"] = new SelectList(_context.CheckList, "CheckListId", "CheckListId", checkItem.CheckListId);
@@ -129,7 +130,8 @@ namespace Airbnb_PWEB.Controllers
                 var copia = _context.CheckItems.Where(c => c.CheckItemId == item).FirstOrDefault();
                 var newitem = new CheckItem() {
                     Name = copia.Name,
-                    CheckListId = copia.CheckListId
+                    CheckListId = copia.CheckListId,
+                    isCheck = true
                     
                 };
                 checkItemsList.Add(newitem);

@@ -12,6 +12,8 @@ namespace Airbnb_PWEB.Models
         public string Name { get; set; }
         public int CheckListId { get; set; }
         public CheckList CheckList { get; set; }
+
+        public bool isCheck { get; set; }
     }
 
 }
