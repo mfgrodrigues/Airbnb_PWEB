@@ -29,7 +29,7 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                Add Checklist
+                Options
             </th>
         </tr>
     </thead>
@@ -44,7 +44,6 @@
                     @if (User.IsInRole("Admin"))
                     {
                         <a asp-action="Edit" asp-route-id="@item.CategoryId"><img src="resources/edit.svg" width="3%" alt="Edit" /></a>
-                        <a asp-action="Delete" asp-route-id="@item.CategoryId"><img src="resources/delete.svg" width="3%" alt="Delete" /></a>
                     }
 
                     @if (User.IsInRole("Owner_Manager"))
