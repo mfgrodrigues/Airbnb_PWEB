@@ -120,10 +120,6 @@ namespace Airbnb_PWEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CheckEdit(List<int> checkValues)
         {
-            if (checkValues.Count() == 0)
-            {
-                return NotFound();
-            }
             var checkItemsList = new List<CheckItem>();
             foreach (var item in checkValues)
             {
